@@ -1,7 +1,7 @@
 {
   "name": "nodejs-typescript-api",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "src/index.ts",
   "scripts": {
     "dev": "ts-node-dev --respawn --pretty --transpile-only src/index.ts"
   },
@@ -10,11 +10,10 @@
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
-    "express-jwt": "^6.1.0",
     "express-session": "^1.17.2",
     "helmet": "^4.6.0",
-    "jwks-rsa": "^2.0.5",
-    "keycloak-connect": "^15.1.0"
+    "keycloak-connect": "^15.1.0",
+    "mongoose": "^6.1.1"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",
