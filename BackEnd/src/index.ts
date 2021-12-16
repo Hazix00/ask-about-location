@@ -11,9 +11,8 @@ import mongoose from "mongoose"
 import { errorHandler } from "./middleware/error.middleware";
 import { notFoundHandler } from "./middleware/not-found.middleware";
 import { initKeycloak } from './config/keycloak-config'
-import { CityModel } from "./models/city.model";
-import { ReplyModel } from "./models/reply.model";
-import { QuestionModel } from "./models/question.model";
+// import { CityModel } from "./models/city.model";
+// import { QuestionModel } from "./models/question.model";
 
 
 dotenv.config();
