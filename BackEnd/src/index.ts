@@ -50,8 +50,8 @@ app.use(keycloak.middleware())
 /**
  * Routes 
  */
-const { testController } = require('./controllers/testController') 
-app.use('/api/test', testController)
+const { citiesController } = require('./controllers/citiesController') 
+app.use('/api/cities', citiesController)
 
 app.get('/', (req, res) => {
     res.send("Server is up!");

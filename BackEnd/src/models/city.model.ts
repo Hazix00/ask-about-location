@@ -3,6 +3,11 @@ import mongoosastic from 'mongoosastic'
 
 // 1. Create an interface representing a document in MongoDB.
 
+export interface City {
+  name: string
+  coordinate : {lat: number, lon: number }
+}
+
 // 2. Create a Schema corresponding to the document interface.
 
 export const citySchema = new Schema({

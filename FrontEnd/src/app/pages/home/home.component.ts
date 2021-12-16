@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -6,9 +7,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  message!: string
+
+  constructor(private readonly http: HttpClient) { }
 
   ngOnInit(): void {
+    this.testBackend('http://localhost:7001/api/test/all-user').subscribe((data:any) => {
+      if(data.message){
+        this.message = data.message
+      }
+      else {
+        this.message = data
+      }
+    })
+  }
+
+  testBackend(url: string) {
+    return this.http.get(url);
   }
 
 }

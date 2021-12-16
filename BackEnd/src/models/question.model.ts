@@ -33,6 +33,7 @@ const userSchema = new Schema<User>({
 
 const replaySchema = new Schema<Reply>({
   content: { type: String, required: true },
+  // @ts-ignore
   user: { type: [userSchema], required: true },
   createdAt: { type: Date, required: true }
 });
@@ -40,7 +41,9 @@ const replaySchema = new Schema<Reply>({
 const schema = new Schema<Question>({
   title: { type: String, required: true, es_indexed: true },
   content: { type: String, required: true, es_indexed: true },
+  // @ts-ignore
   city: {type: [citySchema], required: true, es_indexed: true },
+  // @ts-ignore
   user: { type: [userSchema], required: true },
   createdAt: { type: Date, required: true, es_indexed: true },
   replies: {
