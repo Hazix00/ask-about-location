@@ -6,10 +6,14 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import session, { MemoryStore } from "express-session";
+import mongoose from "mongoose"
 
 import { errorHandler } from "./middleware/error.middleware";
 import { notFoundHandler } from "./middleware/not-found.middleware";
 import { initKeycloak } from './config/keycloak-config'
+import { CityModel } from "./models/city.model";
+import { ReplyModel } from "./models/reply.model";
+import { QuestionModel } from "./models/question.model";
 
 
 dotenv.config();
@@ -19,8 +23,10 @@ dotenv.config();
 if (!process.env.PORT){
     process.exit(1);
 }
-
 const PORT: number = parseInt(process.env.PORT as string, 10);
+const keycloakConfig = require('../keycloak.json')
+const memoryStore = new MemoryStore();
+
 
 const app = express()
 /**
@@ -30,27 +36,59 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json());
 
-//keycloak Configuraton
-const memoryStore = new MemoryStore();
+/**
+ *  Keycloak Configuration
+ */
 app.use(session({ 
-    secret: 'NFNZQefzsrURjZ88mRYsKUSKUQcfzsWM', 
+    secret: keycloakConfig.credentials.secret, 
     resave: false, 
     saveUninitialized: true, 
     store: memoryStore
  }));
 const keycloak = initKeycloak(memoryStore)
-app.use(keycloak.middleware({logout: '/logout', admin: '/'}))
+app.use(keycloak.middleware())
 
-// Routes
-const testController = require('./controllers/testController').testController
+/**
+ * Routes 
+ */
+const { testController } = require('./controllers/testController') 
 app.use('/api/test', testController)
 
 app.get('/', (req, res) => {
     res.send("Server is up!");
 });
-//Error handlers
+
+/**
+ * Error handlers  
+ */
 app.use(errorHandler);
 app.use(notFoundHandler);
+
+/**
+ * DB Config  
+ */
+mongoose.connect(process.env.MONGO_URI as string)
+
+// Mapping Collections to Elasticksearch and synchronize cities
+// CityModel.createMapping((err, mapping) => {
+//     console.log('CityModel mapping created')
+// })
+// QuestionModel.createMapping((err, mapping) => {
+//     console.log('QuestionModel mapping created')
+// })
+
+// let stream = CityModel.synchronize();
+// let count:number = 0;
+// stream.on('data', (err, doc) => {
+//     count++;
+// });
+// stream.on('close', () => {
+//     console.log('indexed ' + count + ' documents!');
+// });
+// stream.on('error', (err) => {
+//   console.log("Error while synchronizing" + err);
+// });
+
 /**
  * Server Activation
  */

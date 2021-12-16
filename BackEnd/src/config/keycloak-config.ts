@@ -3,8 +3,6 @@ import Keycloak from 'keycloak-connect'
 
 let _keycloak: Keycloak.Keycloak;
 
-
-
 export const initKeycloak = (memoryStore: MemoryStore) => {
     if (_keycloak) {
         console.warn("Trying to init Keycloak again!");

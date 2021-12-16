@@ -9,7 +9,8 @@ export function initializeKeycloak(
         config: environment.keycloakConfig,
         initOptions: {
           onLoad: 'login-required',
-          checkLoginIframe: false
+          checkLoginIframe: false,
+          flow: 'implicit'
         },
         enableBearerInterceptor: true,
         bearerExcludedUrls: ['/assets', '/client/public']

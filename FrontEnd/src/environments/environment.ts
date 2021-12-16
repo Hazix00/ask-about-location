@@ -8,6 +8,7 @@ export const environment = {
     url: 'http://localhost:8080/auth',
     realm: 'Locations-Realm',
     clientId: 'angular-web-app',
+    enableCors: true
   }
 };
 

@@ -13,7 +13,8 @@
     "express-session": "^1.17.2",
     "helmet": "^4.6.0",
     "keycloak-connect": "^15.1.0",
-    "mongoose": "^6.1.1"
+    "mongoosastic": "^4.6.0",
+    "mongoose": "^6.1.2"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",

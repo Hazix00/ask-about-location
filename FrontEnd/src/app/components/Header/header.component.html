@@ -1,0 +1,10 @@
+<nav>
+  <div>
+    <div *ngIf="isLoggedIn">
+      <strong>Welcome : {{ userProfile?.username}}</strong>
+      <strong>Welcome : {{ userProfile?.id}}</strong>
+      <button type="button" (click)="logout()">Log out</button>
+    </div>
+    <button *ngIf="!isLoggedIn" type="button" (click)="login()">Log in</button>
+  </div>
+</nav>
