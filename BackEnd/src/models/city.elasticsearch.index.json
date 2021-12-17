@@ -1,8 +1,16 @@
 {
     "settings": {
         "number_of_shards": 1,
-        "number_of_replicas": 1
-    },
+        "number_of_replicas": 1,
+        "analysis": {
+            "normalizer": {
+                "my_normalizer": {
+                    "type": "custom",
+                    "filter": ["lowercase"]
+                }
+            }
+        }
+	},
     "mappings": {
         "properties": {
             "coordinate": {
@@ -12,7 +20,16 @@
                 "type": "keyword"
             },
             "name": {
-                "type": "text"
+                "type": "text",
+                "fields": {
+                    "normalize": {
+                        "type": "keyword",
+                        "normalizer": "my_normalizer"
+                    },
+                    "keyword" : {
+                        "type": "keyword"
+                    }
+                }
             }
         }
     }

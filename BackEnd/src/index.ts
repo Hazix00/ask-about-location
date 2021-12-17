@@ -11,9 +11,11 @@ import mongoose from "mongoose"
 import { errorHandler } from "./middleware/error.middleware";
 import { notFoundHandler } from "./middleware/not-found.middleware";
 import { initKeycloak } from './config/keycloak-config'
-// import { FavoriteModel } from "./models/favorite.model";
-// import { CityModel } from "./models/city.model";
+
+import { FavoriteModel } from "./models/favorite.model";
+import { CityModel } from "./models/city.model";
 import { QuestionModel } from "./models/question.model";
+
 
 
 dotenv.config();
@@ -51,12 +53,10 @@ app.use(keycloak.middleware())
 /**
  * Routes 
  */
-const { citiesController } = require('./controllers/citiesController') 
+const { citiesController } = require('./controllers/citiesController')
+const { questionsController } = require('./controllers/questionsController')
 app.use('/api/cities', citiesController)
-
-app.get('/', (req, res) => {
-    res.send("Server is up!");
-});
+app.use('/api/questions', questionsController)
 
 /**
  * Error handlers  
@@ -70,6 +70,7 @@ app.use(notFoundHandler);
 mongoose.connect(process.env.MONGO_URI as string)
 
 // Mapping Collections to Elasticksearch and synchronize cities
+// //@ts-ignore
 // CityModel.createMapping((err, mapping) => {
 //     console.log('CityModel mapping created')
 // })
@@ -83,21 +84,20 @@ mongoose.connect(process.env.MONGO_URI as string)
 //     console.log('FavoriteModel mapping created')
 // })
 
-//@ts-ignore
-let stream = QuestionModel.synchronize();
-let count:number = 0;
-//@ts-ignore
-stream.on('data', (err, doc) => {
-    console.log(doc)
-    count++;
-});
-stream.on('close', () => {
-    console.log('indexed ' + count + ' documents!');
-});
-//@ts-ignore
-stream.on('error', (err) => {
-  console.log("Error while synchronizing" + err);
-});
+// // @ts-ignore
+// let stream = QuestionModel.synchronize();
+// let count:number = 0;
+// //@ts-ignore
+// stream.on('data', (err, doc) => {
+//     count++;
+// });
+// stream.on('close', () => {
+//     console.log('indexed ' + count + ' documents!');
+// });
+// //@ts-ignore
+// stream.on('error', (err) => {
+//   console.log("Error while synchronizing" + err);
+// });
 
 /**
  * Server Activation
