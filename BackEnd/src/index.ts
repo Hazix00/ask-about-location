@@ -11,6 +11,7 @@ import mongoose from "mongoose"
 import { errorHandler } from "./middleware/error.middleware";
 import { notFoundHandler } from "./middleware/not-found.middleware";
 import { initKeycloak } from './config/keycloak-config'
+// import { FavoriteModel } from "./models/favorite.model";
 // import { CityModel } from "./models/city.model";
 // import { QuestionModel } from "./models/question.model";
 
@@ -72,18 +73,28 @@ mongoose.connect(process.env.MONGO_URI as string)
 // CityModel.createMapping((err, mapping) => {
 //     console.log('CityModel mapping created')
 // })
+//@ts-ignore
 // QuestionModel.createMapping((err, mapping) => {
 //     console.log('QuestionModel mapping created')
 // })
 
-// let stream = CityModel.synchronize();
+//@ts-ignore
+// FavoriteModel.createMapping((err, mapping) => {
+//     console.log('FavoriteModel mapping created')
+// })
+
+// //@ts-ignore
+// let stream = QuestionModel.synchronize();
 // let count:number = 0;
+// //@ts-ignore
 // stream.on('data', (err, doc) => {
+//     console.log(doc)
 //     count++;
 // });
 // stream.on('close', () => {
 //     console.log('indexed ' + count + ' documents!');
 // });
+// //@ts-ignore
 // stream.on('error', (err) => {
 //   console.log("Error while synchronizing" + err);
 // });
@@ -93,4 +104,4 @@ mongoose.connect(process.env.MONGO_URI as string)
  */
 app.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`);
-});
+})

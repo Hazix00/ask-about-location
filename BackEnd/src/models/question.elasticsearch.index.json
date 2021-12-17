@@ -57,15 +57,6 @@
                     },
                     "user": {
                         "properties": {
-                            "_id": {
-                                "type": "text",
-                                "fields": {
-                                    "keyword": {
-                                        "type": "keyword",
-                                        "ignore_above": 256
-                                    }
-                                }
-                            },
                             "email": {
                                 "type": "text",
                                 "fields": {
@@ -99,15 +90,6 @@
             },
             "user": {
                 "properties": {
-                    "_id": {
-                        "type": "text",
-                        "fields": {
-                            "keyword": {
-                                "type": "keyword",
-                                "ignore_above": 256
-                            }
-                        }
-                    },
                     "email": {
                         "type": "text",
                         "fields": {

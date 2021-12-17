@@ -20,7 +20,7 @@ export const citySchema = new Schema({
       es_indexed: true
     },
     lat: { type: Number },
-    lon: { type: Number },
+    lon: { type: Number }
   }
 })
 

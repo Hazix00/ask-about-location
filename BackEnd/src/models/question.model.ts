@@ -31,7 +31,7 @@ const userSchema = new Schema<User>({
   email: { type: String, required: true }
 });
 
-const replaySchema = new Schema<Reply>({
+const replySchema = new Schema<Reply>({
   content: { type: String, required: true },
   // @ts-ignore
   user: { type: [userSchema], required: true },
@@ -42,12 +42,12 @@ const schema = new Schema<Question>({
   title: { type: String, required: true, es_indexed: true },
   content: { type: String, required: true, es_indexed: true },
   // @ts-ignore
-  city: {type: [citySchema], required: true, es_indexed: true },
+  city: {type: citySchema, required: true,es_type: 'nested', es_indexed: true },
   // @ts-ignore
-  user: { type: [userSchema], required: true },
+  user: { type: userSchema, required: true, es_type: 'nested', es_indexed: true },
   createdAt: { type: Date, required: true, es_indexed: true },
   replies: {
-    type:[replaySchema],
+    type:[replySchema],
     es_indexed: true,
     es_type: 'nested',
     es_include_in_parent: true
