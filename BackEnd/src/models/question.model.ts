@@ -1,42 +1,21 @@
 import { Schema, model } from 'mongoose';
 import mongoosastic from 'mongoosastic';
-import { citySchema } from './city.model';
+import { City, citySchema } from './city.model';
+import { User, userSchema } from './user.schema';
+import { Reply, replySchema } from './replies.schema';
 
 // 1. Create an interface representing a document in MongoDB.
-
-export interface User {
-  username: string
-  email: string
-}
-
-export interface Reply {
-  questionId: string
-  content: string
-  user: User
-  createdAt: Date
-}
 
 export interface Question {
   title: string
   content: string
-  city: string
+  city: City
   user: User
   createdAt: Date
   replies: Reply[]
 }
 
 // 2. Create a Schema corresponding to the document interface.
-const userSchema = new Schema<User>({
-  username: { type: String, required: true },
-  email: { type: String, required: true }
-});
-
-const replySchema = new Schema<Reply>({
-  content: { type: String, required: true },
-  // @ts-ignore
-  user: { type: [userSchema], required: true },
-  createdAt: { type: Date, required: true }
-});
 
 const schema = new Schema<Question>({
   title: { type: String, required: true, es_indexed: true },

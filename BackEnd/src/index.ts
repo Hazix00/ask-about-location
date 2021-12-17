@@ -13,7 +13,7 @@ import { notFoundHandler } from "./middleware/not-found.middleware";
 import { initKeycloak } from './config/keycloak-config'
 // import { FavoriteModel } from "./models/favorite.model";
 // import { CityModel } from "./models/city.model";
-// import { QuestionModel } from "./models/question.model";
+import { QuestionModel } from "./models/question.model";
 
 
 dotenv.config();
@@ -83,21 +83,21 @@ mongoose.connect(process.env.MONGO_URI as string)
 //     console.log('FavoriteModel mapping created')
 // })
 
-// //@ts-ignore
-// let stream = QuestionModel.synchronize();
-// let count:number = 0;
-// //@ts-ignore
-// stream.on('data', (err, doc) => {
-//     console.log(doc)
-//     count++;
-// });
-// stream.on('close', () => {
-//     console.log('indexed ' + count + ' documents!');
-// });
-// //@ts-ignore
-// stream.on('error', (err) => {
-//   console.log("Error while synchronizing" + err);
-// });
+//@ts-ignore
+let stream = QuestionModel.synchronize();
+let count:number = 0;
+//@ts-ignore
+stream.on('data', (err, doc) => {
+    console.log(doc)
+    count++;
+});
+stream.on('close', () => {
+    console.log('indexed ' + count + ' documents!');
+});
+//@ts-ignore
+stream.on('error', (err) => {
+  console.log("Error while synchronizing" + err);
+});
 
 /**
  * Server Activation
