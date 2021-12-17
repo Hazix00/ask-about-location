@@ -6,7 +6,7 @@ export const notFoundHandler = (
   next: NextFunction
 ) => {
 
-  const message = "Resource not found";
+  const error = "Resource not found";
 
-  response.status(404).json({ message });
+  response.status(404).json({ error });
 };

@@ -5,7 +5,8 @@ export const handleResponse = async (res: Response ,callBack: () => Promise<any>
     try {
         await callBack()
     } catch (e:any) {
-        res.status(500).send(e.message);
+        console.log(e.message)
+        return res.status(500).send(e.message);
     }
 }
 // Handle elasticsearch searching
@@ -16,11 +17,11 @@ export const handleSearch = (res:Response ,Model: Model<any>, query:any) => {
             return res.status(500).json(err)
         }
 
-        res.status(200).json(results.hits.hits);
+        return res.status(200).json(results.hits.hits);
     })
 }
 // handle saving document to elasticsearch
-export const savieToIndex = (doc: any) => {
+export const saveToIndex = (doc: any) => {
     //@ts-ignore
     doc.save(function (err) {
         if (err) throw err;

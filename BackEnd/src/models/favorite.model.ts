@@ -7,7 +7,7 @@ import { User, userSchema } from './user.schema';
 export interface Favorite {
   id: string
   user: User
-  favoriteQuestionsIds: string[]
+  favoriteQuestionsIds: Array<{ questionId: string, createdAt:Date }>
 }
 
 // 2. Create a Schema corresponding to the document interface.
