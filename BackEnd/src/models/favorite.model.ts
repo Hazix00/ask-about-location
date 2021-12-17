@@ -5,6 +5,7 @@ import { User, userSchema } from './user.schema';
 // 1. Create an interface representing a document in MongoDB.
 
 export interface Favorite {
+  id: string
   user: User
   favoriteQuestionsIds: string[]
 }

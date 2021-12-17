@@ -55,8 +55,10 @@ app.use(keycloak.middleware())
  */
 const { citiesController } = require('./controllers/citiesController')
 const { questionsController } = require('./controllers/questionsController')
+const { userFavoriteQuestionsController } = require('./controllers/userFavoriteQuestionsController')
 app.use('/api/cities', citiesController)
 app.use('/api/questions', questionsController)
+app.use('/api/favorites', userFavoriteQuestionsController)
 
 /**
  * Error handlers  

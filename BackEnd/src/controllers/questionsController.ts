@@ -1,7 +1,6 @@
 import express from "express";
-import { handleSearch } from "../common/handle-elastic-response";
-import { handleResponse } from "../common/handle-response";
-import { getKeycloak } from '../config/keycloak-config'
+import { handleResponse, handleSearch } from "../common/helperFunctions";
+import { getKeycloak } from '../config/keycloak-config';
 import { QuestionModel } from "../models/question.model";
 
 export const questionsController = express.Router();

@@ -7,6 +7,7 @@ import { Reply, replySchema } from './replies.schema';
 // 1. Create an interface representing a document in MongoDB.
 
 export interface Question {
+  id: string
   title: string
   content: string
   city: City

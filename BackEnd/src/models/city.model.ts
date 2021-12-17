@@ -4,6 +4,7 @@ import mongoosastic from 'mongoosastic'
 // 1. Create an interface representing a document in MongoDB.
 
 export interface City {
+  id: string
   name: string
   coordinate : {lat: number, lon: number }
 }
