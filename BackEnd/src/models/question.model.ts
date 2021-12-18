@@ -1,4 +1,5 @@
 import { Schema, model } from 'mongoose';
+//@ts-ignore
 import mongoosastic from 'mongoosastic';
 import { City, citySchema } from './city.model';
 import { User, userSchema } from './user.schema';

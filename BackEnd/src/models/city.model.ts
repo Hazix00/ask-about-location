@@ -1,4 +1,5 @@
 import { Schema, model } from 'mongoose';
+//@ts-ignore
 import mongoosastic from 'mongoosastic';
 
 // 1. Create an interface representing a document in MongoDB.
