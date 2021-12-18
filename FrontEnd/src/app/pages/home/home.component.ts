@@ -1,5 +1,7 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { ApiModelDTO } from 'src/app/dtos/apiModel.dto';
+import { City } from 'src/app/models/city.model';
+import { CitiesService } from 'src/app/services/cities.service';
 
 @Component({
   templateUrl: './home.component.html',
@@ -7,23 +9,26 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  message!: string
+  cities: ApiModelDTO<City>[] = []
 
-  constructor(private readonly http: HttpClient) { }
+  constructor(private readonly citiesService: CitiesService) { }
 
   ngOnInit(): void {
-    this.testBackend('http://localhost:7001/api/test/all-user').subscribe((data:any) => {
-      if(data.message){
-        this.message = data.message
-      }
-      else {
-        this.message = data
-      }
-    })
-  }
 
-  testBackend(url: string) {
-    return this.http.get(url);
+    this.citiesService.get('sett').subscribe(
+      cities => { // success
+        if(cities){
+          console.log(cities)
+          this.cities = cities
+        }
+        else {
+          console.log('nothing returned')
+        }
+      },
+      err => { // error
+        console.log(err)
+      }
+    )
   }
 
 }

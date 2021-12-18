@@ -1,3 +1,12 @@
 <p>home works!</p>
 
-{{ message }}
+<ul style="list-style: none;">
+  <li *ngFor="let city of cities">
+    <div style="border: 2px solid black; text-align: center; width: 20%; margin: 10px auto;">
+      <h3>{{ city._source.name }}</h3>
+      <h4>Courdinates</h4>
+      <p>Lat: {{city._source.coordinate.lat }}</p>
+      <p>Lon: {{city._source.coordinate.lon }}</p>
+    </div>
+  </li>
+</ul>
