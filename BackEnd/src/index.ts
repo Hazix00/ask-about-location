@@ -72,33 +72,26 @@ app.use(notFoundHandler);
 mongoose.connect(process.env.MONGO_URI as string)
 
 // Mapping Collections to Elasticksearch and synchronize cities
-//@ts-ignore
 // CityModel.esTruncate(err => console.log(err))
-// //@ts-ignore
 // CityModel.createMapping((err, mapping) => {
 //     console.log('CityModel mapping created')
 // })
-//@ts-ignore
 // QuestionModel.createMapping((err, mapping) => {
 //     console.log('QuestionModel mapping created')
 // })
 
-//@ts-ignore
 // FavoriteModel.createMapping((err, mapping) => {
 //     console.log('FavoriteModel mapping created')
 // })
 
-// //@ts-ignore
 // let stream = CityModel.synchronize();
 // let count:number = 0;
-// //@ts-ignore
 // stream.on('data', (err, doc) => {
 //     count++;
 // });
 // stream.on('close', () => {
 //     console.log('indexed ' + count + ' documents!');
 // });
-// //@ts-ignore
 // stream.on('error', (err) => {
 //   console.log("Error while synchronizing" + err);
 // });

@@ -80,7 +80,9 @@ userFavoriteQuestionsController.post('/', async (req, res) => {
         //Check question exists in mongodb
         const question: Question | null = await QuestionModel.findById(questionId)
         if(!question){
-            return res.status(404).json({ error: `Question of id : ${questionId} was not found in the database` })
+            return res.status(404).json({ 
+                error: `Question of id : ${questionId} was not found in the database` 
+            })
         }
 
         const user = req.body.user

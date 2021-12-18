@@ -18,7 +18,7 @@ export interface Question {
 
 // 2. Create a Schema corresponding to the document interface.
 
-const schema = new Schema<Question>({
+const schema = new Schema({
   title: { type: String, required: true, es_indexed: true },
   content: { type: String, required: true, es_indexed: true },
   // @ts-ignore
@@ -37,4 +37,4 @@ const schema = new Schema<Question>({
 schema.plugin(mongoosastic);
 
 // 3. Create a Model.
-export const QuestionModel = model<Question>('Question', schema);
+export const QuestionModel = model('Question', schema);

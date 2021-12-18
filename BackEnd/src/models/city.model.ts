@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import mongoosastic from 'mongoosastic'
+import mongoosastic from 'mongoosastic';
 
 // 1. Create an interface representing a document in MongoDB.
 

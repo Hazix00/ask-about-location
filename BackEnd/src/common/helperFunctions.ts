@@ -1,5 +1,5 @@
 import { Response } from "express";
-import { Model } from "mongoose"
+import { MongoosasticModel } from "mongoose"
 
 export const handleResponse = async (res: Response ,callBack: () => Promise<any>) => {
     try {
@@ -10,9 +10,8 @@ export const handleResponse = async (res: Response ,callBack: () => Promise<any>
     }
 }
 // Handle elasticsearch searching
-export const handleSearch = (res:Response ,Model: Model<any>, query:any) => {
-    //@ts-ignore
-    Model.esSearch( query, (err: any, results: any ) => {
+export const handleSearch = (res:Response ,Model: MongoosasticModel<any>, query:any) => {
+    Model.esSearch( query, {}, (err: any, results: any ) => {
         if(err) {
             return res.status(500).json(err)
         }
