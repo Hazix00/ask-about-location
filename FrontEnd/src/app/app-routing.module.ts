@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from 'src/guards/keykloak-guard';
+import { AuthGuard } from './guards/keykloak-guard';
 import { HomeComponent } from './pages/home/home.component';
 
 const routes: Routes = [

@@ -4,6 +4,7 @@
 
 export const environment = {
   production: false,
+  apiUrl: 'http://localhost:7001/api',
   keycloakConfig: {
     url: 'http://localhost:8080/auth',
     realm: 'Locations-Realm',
