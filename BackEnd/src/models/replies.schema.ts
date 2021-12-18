@@ -14,6 +14,6 @@ export interface Reply {
 export const replySchema = new Schema<Reply>({
     content: { type: String, required: true },
     // @ts-ignore
-    user: { type: [userSchema], required: true },
+    user: { type: userSchema, required: true },
     createdAt: { type: Date, required: true }
 });
