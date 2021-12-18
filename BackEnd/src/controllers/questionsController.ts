@@ -10,13 +10,26 @@ export const questionsController = express.Router();
 // const keycloak = getKeycloak()
 // questionsController.use(keycloak.protect())
 
-// GET questions
+// GET /questions 
+// { 
+// 	"from": number, //OPTIONAL, DEFAULT 0
+// 	"size": number, //OPTIONAL, DEFAULT 10
+// 	"coordinates": {
+// 		"lat": number, // REQUIRED
+// 		"lng": number  // REQUIRED
+// 	}, //OPTIONAL
+// 	"search": {
+// 		"value" : string, // REQUIRED
+// 		"fields" : string[] // REQUIRED
+// 	} //OPTIONAL
+// } //OPTIONAL DEFAULT GET results sorted by date DESC
 questionsController.get('/', async (req, res) => {
     
     await handleResponse(res, async () => {
 
         let from = req.body.from ? req.body.from : 0
         let size = req.body.size ? req.body.size : 10
+        const search: {value: string, fields: string[]} = req.body.search
 
         const coordinates = req.body.coordinates
         // By default getting questions ordered by creation date
@@ -27,7 +40,7 @@ questionsController.get('/', async (req, res) => {
             }
         }
         // If coordinates is set, getting questions by distance from coordinates
-        if(coordinates && coordinates.lat && coordinates.lng) {
+        if(!search && coordinates && coordinates.lat && coordinates.lng) {
             sortCriteria = {
                 _geo_distance: {
                     "city.coordinate": {
@@ -39,11 +52,33 @@ questionsController.get('/', async (req, res) => {
                 }
             } 
         }
-
-        const searchQuety:any = {
+        let searchQuety:any = {
             from,
             size,
             sort: [ sortCriteria ]
+        }
+        // if search is set, search in title and content
+        if(search) {
+
+            if(!search.value || !search.fields || !Array.isArray(search.fields) ) {
+                return res.status(500).json({
+                    error: "search object must be of type { value:string, fields: string[] }"
+                }) 
+            }
+            if(search.fields.length == 0) {
+                return res.status(500).json({
+                    error: "search.fields is empty "
+                }) 
+            }
+
+            searchQuety.query = {
+                multi_match : {
+                    query: search.value,
+                    type: "best_fields",
+                    fields: search.fields,
+                    tie_breaker: 0.3
+                }
+            }
         }
 
         handleSearch(res, QuestionModel,searchQuety)
@@ -52,8 +87,22 @@ questionsController.get('/', async (req, res) => {
     
 });
 
-//TODO search by suggested terms
-
+//POST /questions 
+// {
+// 	"title": string,
+// 	"content": string,
+// 	"city": {
+// 		"name": string, 
+// 		"coordinate": {
+// 			"lat": number,
+// 			"lon": number
+// 		}
+// 	},
+// 	"user": {
+// 		"username": string,
+// 		"email": string
+// 	}
+// } ALL FIELDS ARE REQUIRED
 questionsController.post('/', async (req, res) => {
     
     await handleResponse(res, async () => {
@@ -67,6 +116,17 @@ questionsController.post('/', async (req, res) => {
     })
 })
 
+// POST /questions/reply
+// {
+// 	"questionId": string,
+// 	"reply": {
+// 		"content": string,
+// 		"user": {
+// 			"username": string,
+// 			"email": string
+// 		}
+// 	}
+// } ALL FIELDS ARE REQUIRED
 questionsController.post('/reply', async (req, res) => {
     
     await handleResponse(res, async () => {
