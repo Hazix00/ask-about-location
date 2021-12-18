@@ -8,6 +8,7 @@ import { HomeComponent } from './pages/home/home.component';
 import { initializeKeycloak } from './init/keycloak-init.factory';
 import { HeaderComponent } from './components/Header/header.component';
 import { HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { HttpClientModule } from '@angular/common/http';
     BrowserModule,
     AppRoutingModule,
     KeycloakAngularModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule
   ],
   providers: [{
     provide: APP_INITIALIZER,
