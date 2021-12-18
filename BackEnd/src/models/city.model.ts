@@ -10,9 +10,9 @@ export interface City {
 }
 
 // 2. Create a Schema corresponding to the document interface.
-
+// I use ./city.elasticsearch.index.json to create mapping manually
 export const citySchema = new Schema({
-  name: { type: String, es_indexed: true },
+  name: { type: String, es_type: 'search_as_you_type', es_indexed: true },
   coordinate: {
     geo_point: {
       type: String,
@@ -25,7 +25,10 @@ export const citySchema = new Schema({
   }
 })
 
-citySchema.plugin(mongoosastic)
+citySchema.plugin(mongoosastic, {
+  index: 'cities',
+  type: 'city'
+})
 
 // 3. Create a Model.
 export const CityModel = model('City', citySchema);

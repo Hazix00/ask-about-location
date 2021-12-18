@@ -25,25 +25,21 @@ citiesController.get('/', async (req, res) => {
       }
       // search city contains
       let searchCriteria:any = {
-        "wildcard": {
-            "name": {
-                "value": `${search}*`
-            }
+        "multi_match": {
+          "query": search,
+          "type": "bool_prefix",
+          "fields": [
+            "name",
+            "namefield._2gram",
+            "name._3gram"
+          ]
         }
       }
       if(match && match == 'true') {
           // search the exact city name
           searchCriteria = {
-            "bool": {
-              "must": [
-                {
-                  "terms": {
-                    "name.normalize": [
-                      search
-                    ]
-                  }
-                }
-              ]
+            "match_phrase_prefix": {
+              "name": search
             }
           }
       }
