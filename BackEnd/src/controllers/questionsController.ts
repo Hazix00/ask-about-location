@@ -1,7 +1,8 @@
 import express from "express";
-import { handleResponse, handleSearch } from "../common/helperFunctions";
+import { handleResponse, handleSearch, saveToIndex } from "../common/helperFunctions";
 import { getKeycloak } from '../config/keycloak-config';
-import { QuestionModel } from "../models/question.model";
+import { Question, QuestionModel } from "../models/question.model";
+import { Reply } from "../models/replies.schema";
 
 export const questionsController = express.Router();
 
@@ -52,5 +53,49 @@ questionsController.get('/', async (req, res) => {
 });
 
 //TODO search by suggested terms
-//TODO POST /questions
-//TODO POST /questions/reply
+
+questionsController.post('/', async (req, res) => {
+    
+    await handleResponse(res, async () => {
+        let question: Question = req.body
+        question.createdAt = new Date()
+
+        question = await QuestionModel.create(question)
+        
+        saveToIndex(question)
+        return res.status(200).json(question)
+    })
+})
+
+questionsController.post('/reply', async (req, res) => {
+    
+    await handleResponse(res, async () => {
+
+        let questionId: string = req.body.questionId
+        let reply: Reply = req.body.reply
+
+        if(!questionId || !reply) {
+            return res.status(500).json({
+                error: "the body must contain [questionId] and [reply]"
+            }) 
+        }
+
+        let question: Question | null = await QuestionModel.findById(questionId)
+        if(!question) {
+            return res.status(404).json({
+                error: `Question of id : ${questionId} was not found in the database`
+            })
+        }
+
+        reply.createdAt = new Date()
+        question.replies.push(reply)
+        await QuestionModel.validate(question)
+        
+        question = await QuestionModel.findByIdAndUpdate(questionId, question, {new: true})
+        
+        
+        saveToIndex(question)
+        return res.status(200).json(question)
+
+    })
+})
