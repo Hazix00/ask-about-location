@@ -39,6 +39,14 @@ const checkUserFavorites = async (res:any , user:any): Promise<Favorite> => {
 }
 
 // GET /favorites questions
+// {
+// 	"from": number, //OPTIONAL
+// 	"size": number, //OPTIONAL
+// 	"user" : {
+// 			"username" : string, //REQUIRED
+// 			"email" : string //REQUIRED
+// 	} REQUIRED
+// } REQUIRED
 userFavoriteQuestionsController.get("/", async (req, res) => {
   await handleResponse(res, async () => {
     
@@ -69,6 +77,13 @@ userFavoriteQuestionsController.get("/", async (req, res) => {
 });
 
 // POST /favorites question
+// {
+// 	"questionId": string, 
+// 	"user" : {
+// 			"username" : string, 
+// 			"email" : string 
+// 	}
+// } ALL FIELDS ARE 
 userFavoriteQuestionsController.post('/', async (req, res) => {
     await handleResponse(res, async () => {
         const questionId = req.body.questionId
@@ -110,6 +125,13 @@ userFavoriteQuestionsController.post('/', async (req, res) => {
 })
 
 // DELETE /favorites question
+// {
+// 	"questionId": string, 
+// 	"user" : {
+// 			"username" : string, 
+// 			"email" : string 
+// 	}
+// } ALL FIELDS ARE 
 userFavoriteQuestionsController.delete('/', async (req, res) => {
     await handleResponse(res, async () => {
         const questionId = req.body.questionId

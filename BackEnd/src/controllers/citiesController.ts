@@ -9,7 +9,7 @@ export const citiesController = express.Router();
 // const keycloak = getKeycloak()
 // citiesController.use(keycloak.protect())
 
-// GET cities containing or matching search query param if match=true param is set
+// GET /cities?search=value[&match=true] containing or matching search query param if match=true param is set
 citiesController.get('/', async (req, res) => {
     
     await handleResponse(res, async () => {
