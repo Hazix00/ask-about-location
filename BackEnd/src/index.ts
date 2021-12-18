@@ -86,8 +86,8 @@ mongoose.connect(process.env.MONGO_URI as string)
 //     console.log('FavoriteModel mapping created')
 // })
 
-// // @ts-ignore
-// let stream = QuestionModel.synchronize();
+// @ts-ignore
+// let stream = FavoriteModel.synchronize();
 // let count:number = 0;
 // //@ts-ignore
 // stream.on('data', (err, doc) => {

@@ -19,15 +19,15 @@ questionsController.get('/', async (req, res) => {
 
         const coordinates = req.body.coordinates
         // By default getting questions ordered by creation date
-        let searchCriteria:any = { 
+        let sortCriteria:any = { 
             createdAt: {
                 order: "desc", 
                 format: "strict_date_optional_time_nanos"
             }
         }
-        // If coordinates is set , getting questions by distance from coordinates
+        // If coordinates is set, getting questions by distance from coordinates
         if(coordinates && coordinates.lat && coordinates.lng) {
-            searchCriteria = {
+            sortCriteria = {
                 _geo_distance: {
                     "city.coordinate": {
                         lat: coordinates.lat,
@@ -42,7 +42,7 @@ questionsController.get('/', async (req, res) => {
         const searchQuety:any = {
             from,
             size,
-            sort: [ searchCriteria ]
+            sort: [ sortCriteria ]
         }
 
         handleSearch(res, QuestionModel,searchQuety)
@@ -50,3 +50,7 @@ questionsController.get('/', async (req, res) => {
     })
     
 });
+
+//TODO search by suggested terms
+//TODO POST /questions
+//TODO POST /questions/reply

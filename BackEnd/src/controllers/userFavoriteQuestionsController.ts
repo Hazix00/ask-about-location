@@ -38,7 +38,7 @@ const checkUserFavorites = async (res:any , user:any): Promise<Favorite> => {
     return userFavorite;
 }
 
-// GET cities containing or matching search query param if match=true param is set
+// GET /favorites questions
 userFavoriteQuestionsController.get("/", async (req, res) => {
   await handleResponse(res, async () => {
     
@@ -68,6 +68,7 @@ userFavoriteQuestionsController.get("/", async (req, res) => {
   });
 });
 
+// POST /favorites question
 userFavoriteQuestionsController.post('/', async (req, res) => {
     await handleResponse(res, async () => {
         const questionId = req.body.questionId
@@ -87,6 +88,13 @@ userFavoriteQuestionsController.post('/', async (req, res) => {
         let userFavorite: Favorite = await checkUserFavorites(res, user)
         
         if(userFavorite) {
+            const questionIdExists = userFavorite.favoriteQuestionsIds.find( favQ => favQ.questionId == questionId)
+            if(questionIdExists){
+                return res.status(500).json({
+                    error: "Question already in favorites"
+                })
+            }
+
             userFavorite.favoriteQuestionsIds.push({
                 questionId,
                 createdAt: new Date()
@@ -95,6 +103,38 @@ userFavoriteQuestionsController.post('/', async (req, res) => {
             saveToIndex(userFavorite)
 
             res.status(200).json(userFavorite)
+        }
+    })
+})
+
+// DELETE /favorites question
+userFavoriteQuestionsController.delete('/', async (req, res) => {
+    await handleResponse(res, async () => {
+        const questionId = req.body.questionId
+        if (!questionId) {
+            return res.status(500).json({
+                error: "the [questionId] is required in the body"
+            })
+        }
+
+        const user = req.body.user
+        // get the favorite document from mongodb
+        let userFavorite: Favorite = await checkUserFavorites(res, user)
+        
+        if(userFavorite) {
+            // get the other Qs if exists in Array
+            
+            userFavorite = await FavoriteModel.findByIdAndUpdate(userFavorite.id, {
+                $pull: {
+                   "favoriteQuestionsIds": {
+                      "questionId": questionId
+                   }
+                }
+             }, { new: true })
+            // Sync changes to the index
+            saveToIndex(userFavorite)
+
+            return res.status(204).end()
         }
     })
 })
