@@ -5,15 +5,17 @@
         <mat-icon class="icon">input</mat-icon>
         <span class="label">Login</span>
       </a>
-      <a mat-list-item
-        routerLink="/dashboard">
-        <mat-icon class="icon">dashboard</mat-icon>
-        <span class="label">Dashboard</span>
-      </a>
-      <a mat-list-item *ngIf="isLoggedIn" (click)="logout()">
-        <mat-icon class="icon">input</mat-icon>
-        <span class="label">LogOut</span>
-      </a>
+      <ng-container *ngIf="isLoggedIn">
+        <a mat-list-item
+          routerLink="/favorite-questions">
+          <mat-icon class="icon">favorite</mat-icon>
+          <span class="label">Favorite Questions</span>
+        </a>
+        <a mat-list-item (click)="logout()">
+          <mat-icon class="icon">input</mat-icon>
+          <span class="label">LogOut</span>
+        </a>
+      </ng-container>
     </mat-nav-list>
   </mat-sidenav> <!--mat-sidenav  -->
   <mat-sidenav-content> <!--mat-sidenav-content  -->
@@ -36,19 +38,21 @@
                   <span  class="label">Login</span>
                 </a>
             </li>
-            <li>
+            <ng-container *ngIf="isLoggedIn">
+              <li>
                 <a
-                  routerLink="/dashboard">
-                    <mat-icon class="icon">dashboard</mat-icon>
-                    <span class="label">Dashboard</span>
+                  routerLink="/favorite-questions">
+                    <mat-icon class="icon">favorite</mat-icon>
+                    <span class="label">Favorite Questions</span>
                 </a>
               </li>
-            <li *ngIf="isLoggedIn">
+            <li>
                 <a (click)="logout()">
                   <mat-icon class="icon">input</mat-icon>
                   <span class="label">LogOut</span>
                 </a>
             </li>
+            </ng-container>
         </ul>
       </div>
     </mat-toolbar> <!--mat-toolbar  -->

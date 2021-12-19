@@ -1,13 +1,13 @@
-<p>home works!</p>
-
-<!-- <ul style="list-style: none;">
-  <li *ngFor="let city of cities">
-    <div style="border: 2px solid black; text-align: center; width: 30%; margin: 10px auto;">
-      <h2>{{ city._source.name }}</h2>
-      <h3>Id: {{ city._id }}</h3>
-      <h4>Courdinates</h4>
-      <p>Lat: {{city._source.coordinate.lat }}</p>
-      <p>Lon: {{city._source.coordinate.lon }}</p>
+<br>
+<div class="container">
+    <div class="container">
+      <div fxLayout="column" fxLayoutGap="20px" fxLayout.gt-md="row"  fxLayoutAlign="space-around center" class="content">
+          <div class="blocks">
+              <button button="submit" mat-raised-button color="primary">
+                  <mat-icon>add</mat-icon> Add Question
+              </button>
+          </div>
     </div>
-  </li>
-</ul> -->
+</div>
+<br>
+<app-question-item *ngFor="let item of questions" [question]="item"></app-question-item>

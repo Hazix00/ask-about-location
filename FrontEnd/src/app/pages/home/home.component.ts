@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ApiModelDTO } from 'src/app/dtos/apiModel.dto';
 import { FilteredQuestionDTO } from 'src/app/dtos/questions/filteredQuestion.dto';
 import { QuestionsService } from 'src/app/services/questions.service';
@@ -12,30 +13,54 @@ export class HomeComponent implements OnInit {
   questions: ApiModelDTO<FilteredQuestionDTO>[] = []
   page:number = 1
   limit:number = 10
-  constructor(private readonly questionsService: QuestionsService) { }
+
+  constructor(
+    private readonly questionsService: QuestionsService,
+    private readonly _snackBar: MatSnackBar
+  ) { }
 
   ngOnInit(): void {
-    this.questionsService.getLatest(this.page, this.limit).subscribe(
-      questions => {
-        console.log('getLatest')
-        console.log(questions)
-      },
-      error => console.log(error)
-    )
-    this.questionsService.getByDistanceCloseToUserLocation(this.page, this.limit, {lat: 33, lon: -7}).subscribe(
-      questions => {
-        console.log('getByDistanceCloseToUserLocation')
-        console.log(questions)
-      },
-      error => console.log(error)
-    )
+
+    this.getLocation()
+
+  }
+
+  private getLocation(): void{
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position)=>{
+            const {longitude, latitude} = position.coords;
+            this.questionsService.getByDistanceCloseToUserLocation(
+              this.page,
+              this.limit,
+              {lat: latitude, lon: longitude}
+            )
+            .subscribe(
+              questions => this.questions = questions,
+              error => console.log(error)
+            )
+          },
+          this.locationError
+        );
+    } else {
+       console.log("No support for geolocation")
+    }
+  }
+  private locationError = (error: GeolocationPositionError) => {
+    if(error.code === GeolocationPositionError.PERMISSION_DENIED) {
+      this.openSnackBar()
+    }
     this.questionsService.getSearchTerms(this.page, this.limit, 'city', ['title']).subscribe(
-      questions => {
-        console.log('getSearchTerms')
-        console.log(questions)
-      },
+      questions => this.questions = questions,
       error => console.log(error)
     )
+  }
+
+  openSnackBar() {
+    this._snackBar.open("Allow your browser location to get the closest question locations!", "Ok", {
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+    });
   }
 
 }

@@ -10,11 +10,13 @@
       </mat-card-content>
       <mat-card-actions>
         <div fxLayout="row" fxLayoutAlign="space-between">
-          <div>
-            <small>{{ question._source.createdAt | date }}</small>
+          <div class="card__date">
+            <mat-card-subtitle>
+              <small>{{ question._source.createdAt | date }}</small>
+            </mat-card-subtitle>
           </div>
           <div>
-            <button mat-icon-button color="primary" title="Add to favorites">
+            <button mat-icon-button color="primary" matTooltip="Add to favorites">
               <mat-icon class="icon">favorite</mat-icon>
             </button>
           </div>
