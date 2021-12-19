@@ -7,8 +7,7 @@ import { Reply } from "../models/replies.schema";
 export const questionsController = express.Router();
 
 // Use Authentication
-// const keycloak = getKeycloak()
-// questionsController.use(keycloak.protect())
+const keycloak = getKeycloak()
 
 // GET /questions 
 // { 
@@ -103,7 +102,7 @@ questionsController.get('/', async (req, res) => {
 // 		"email": string
 // 	}
 // } ALL FIELDS ARE REQUIRED
-questionsController.post('/', async (req, res) => {
+questionsController.post('/', keycloak.protect(), async (req, res) => {
     
     await handleResponse(res, async () => {
         let question: Question = req.body
@@ -127,7 +126,7 @@ questionsController.post('/', async (req, res) => {
 // 		}
 // 	}
 // } ALL FIELDS ARE REQUIRED
-questionsController.post('/reply', async (req, res) => {
+questionsController.post('/reply', keycloak.protect(), async (req, res) => {
     
     await handleResponse(res, async () => {
 

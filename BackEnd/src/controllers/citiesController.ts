@@ -6,8 +6,8 @@ import { CityModel } from "../models/city.model";
 export const citiesController = express.Router();
 
 // Use Authentication
-// const keycloak = getKeycloak()
-// citiesController.use(keycloak.protect())
+const keycloak = getKeycloak()
+citiesController.use(keycloak.protect())
 
 // GET /cities?search=value[&match=true] containing or matching search query param if match=true param is set
 citiesController.get('/', async (req, res) => {

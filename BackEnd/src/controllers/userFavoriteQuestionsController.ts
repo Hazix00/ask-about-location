@@ -7,8 +7,8 @@ import { Question, QuestionModel } from "../models/question.model";
 export const userFavoriteQuestionsController = express.Router();
 
 // Use Authentication
-// const keycloak = getKeycloak()
-// userFavoriteQuestionsController.use(keycloak.protect())
+const keycloak = getKeycloak()
+userFavoriteQuestionsController.use(keycloak.protect())
 
 // handle getting Favorite document of the user from mongodb
 const checkUserFavorites = async (res:any , user:any): Promise<Favorite> => {
