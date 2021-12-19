@@ -9,28 +9,23 @@ export const questionsController = express.Router();
 // Use Authentication
 const keycloak = getKeycloak()
 
-// GET /questions 
-// { 
-// 	"from": number, //OPTIONAL, DEFAULT 0
-// 	"size": number, //OPTIONAL, DEFAULT 10
-// 	"coordinates": {
-// 		"lat": number, // REQUIRED
-// 		"lng": number  // REQUIRED
-// 	}, //OPTIONAL
-// 	"search": {
-// 		"value" : string, // REQUIRED
-// 		"fields" : string[] // REQUIRED
-// 	} //OPTIONAL
-// } //OPTIONAL DEFAULT GET results sorted by date DESC
+// GET /questions?page=0&limit=10&lat=value&lon=value&search=value&field=title&filed=content&field=city.name
+// page OPTIONAL default 1
+// limit OPTIONAL default 10
+// lat OPTIONAL if no lon and the same for 'lon'
+// search OPTIONAL
+// field OPTIONAL if no search
+// field must be in one or more of ['title', 'content', 'city.name']
 questionsController.get('/', async (req, res) => {
     
     await handleResponse(res, async () => {
 
-        let from = req.body.from ? req.body.from : 0
-        let size = req.body.size ? req.body.size : 10
-        const search: {value: string, fields: string[]} = req.body.search
+        let {page, limit, search, field ,lat, lon,  } = req.query
+        
+        // if limit is undefined set to 10
+        const size = limit ? Number(limit) : 10
+        const pageNumber = !page || Number(page) <= 0 ? 1 : Number(page)
 
-        const coordinates = req.body.coordinates
         // By default getting questions ordered by creation date
         let sortCriteria:any = { 
             createdAt: {
@@ -39,20 +34,20 @@ questionsController.get('/', async (req, res) => {
             }
         }
         // If coordinates is set, getting questions by distance from coordinates
-        if(!search && coordinates && coordinates.lat && coordinates.lng) {
+        if(!search && lat && lon) {
             sortCriteria = {
                 _geo_distance: {
-                    "city.coordinate": {
-                        lat: coordinates.lat,
-                        lon: coordinates.lng
-                    },
+                    "city.coordinate": { lat, lon },
                     order : "asc",
                     unit : "km"
                 }
             } 
         }
+        if(lat && !lon) 
+            return res.status(500).json({ error: "Both lat and lon should be set"})
+
         let searchQuery:any = {
-            from,
+            from: page ? (pageNumber - 1) * size: 0,
             size,
             _source: {
                 exclude:["replies"]
@@ -61,23 +56,26 @@ questionsController.get('/', async (req, res) => {
         }
         // if search is set, search in title and content
         if(search) {
-
-            if(!search.value || !search.fields || !Array.isArray(search.fields) ) {
+            
+            if(!field) {
                 return res.status(500).json({
-                    error: "search object must be of type { value:string, fields: string[] }"
+                    error: "fields query param is empty"
                 }) 
             }
-            if(search.fields.length == 0) {
-                return res.status(500).json({
-                    error: "search.fields is empty "
-                }) 
+            
+            const fields = Array.isArray(field) ? field : [field]
+            const allowedFields = ['title', 'content', 'city.name']
+            
+            for (const f of fields) {
+                if(!allowedFields.includes(f as string))
+                    return res.status(500).json({ error: "field must be in ['title', 'content', 'city.name']" })
             }
 
             searchQuery.query = {
                 multi_match : {
-                    query: search.value,
+                    query: search,
                     type: "best_fields",
-                    fields: search.fields,
+                    fields: fields,
                     tie_breaker: 0.3
                 }
             }
