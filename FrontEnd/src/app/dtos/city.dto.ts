@@ -1,6 +1,6 @@
-import { CityCoordinates } from "../models/cityCoordinates.model";
+import { Coordinates } from "../models/coordinates.model";
 
 export interface CityDTO {
   name: string,
-  coordinate: CityCoordinates
+  coordinate: Coordinates
 }
