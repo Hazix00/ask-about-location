@@ -51,9 +51,12 @@ questionsController.get('/', async (req, res) => {
                 }
             } 
         }
-        let searchQuety:any = {
+        let searchQuery:any = {
             from,
             size,
+            _source: {
+                exclude:["replies"]
+            },
             sort: [ sortCriteria ]
         }
         // if search is set, search in title and content
@@ -70,7 +73,7 @@ questionsController.get('/', async (req, res) => {
                 }) 
             }
 
-            searchQuety.query = {
+            searchQuery.query = {
                 multi_match : {
                     query: search.value,
                     type: "best_fields",
@@ -80,11 +83,28 @@ questionsController.get('/', async (req, res) => {
             }
         }
 
-        handleSearch(res, QuestionModel,searchQuety)
+        handleSearch(res, QuestionModel,searchQuery)
         
     })
     
 });
+
+// GET /questions/:questionId
+questionsController.get('/:questionId', async (req, res) => {
+    
+    await handleResponse(res, async () => {
+        
+        const searchQuery = {
+            query: {
+                term: {
+                    _id: req.params.questionId
+                }
+            }
+        }
+        handleSearch(res, QuestionModel, searchQuery)
+
+    })
+})
 
 //POST /questions 
 // {
