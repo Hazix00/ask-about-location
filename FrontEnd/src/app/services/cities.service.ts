@@ -12,6 +12,7 @@ export class CitiesService {
   endpoint = environment.apiUrl + '/cities'
   constructor(private readonly http: HttpClient) {}
 
+  // Search for cities starting with search. if match=true search for the exact city name
   get(search:string, match: boolean = false): Observable<ApiModelDTO<City>[]> {
     return this.http.get<ApiModelDTO<City>[]>(this.endpoint + `?search=${search}&match=${match}`)
   }

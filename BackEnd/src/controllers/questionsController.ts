@@ -171,7 +171,7 @@ questionsController.post('/reply', keycloak.protect(), async (req, res) => {
         question = await QuestionModel.findByIdAndUpdate(questionId, question, {new: true})
         
         saveToIndex(question)
-        return res.status(200).json(question)
+        return res.status(200).json(reply)
 
     })
 })

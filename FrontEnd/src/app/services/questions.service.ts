@@ -3,7 +3,11 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { ApiModelDTO } from '../dtos/apiModel.dto';
 import { FilteredQuestionDTO } from '../dtos/questions/filteredQuestion.dto';
+import { PostQuestionDTO } from '../dtos/questions/postQuestion.dto';
+import { PostQuestionReplyDTO } from '../dtos/questions/postQuestionReply.dto';
 import { Coordinates } from '../models/coordinates.model';
+import { Question } from '../models/question.model';
+import { Reply } from '../models/replie.model';
 
 @Injectable({
   providedIn: 'root'
@@ -43,5 +47,12 @@ export class QuestionsService {
   }
   getById(questionId: string) {
     return this.http.get<ApiModelDTO<FilteredQuestionDTO>[]>(this.endpoint + '/' + questionId)
+  }
+
+  addQuestion(question: PostQuestionDTO) {
+    this.http.post<Question>(this.endpoint, question)
+  }
+  addQuestionReply(reply: PostQuestionReplyDTO) {
+    this.http.post<Reply>(this.endpoint, reply)
   }
 }
