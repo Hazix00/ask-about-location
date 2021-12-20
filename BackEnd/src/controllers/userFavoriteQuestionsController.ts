@@ -14,10 +14,7 @@ userFavoriteQuestionsController.use(keycloak.protect())
 const checkUserFavorites = async (res:any , user:any): Promise<Favorite> => {
 
     if (!user || !user.username || !user.email) {
-        res.status(500).json({
-            error: "the [user with username and email] is required in the body"
-        })
-        return res.end()
+        throw new Error("the [user with username and email] are required in the body")
     }
     let userFavorite: Favorite = await FavoriteModel.findOne({
         "user.username": user.username,
@@ -39,26 +36,27 @@ const checkUserFavorites = async (res:any , user:any): Promise<Favorite> => {
 }
 
 // GET /favorites questions
-// {
-// 	"from": number, //OPTIONAL
-// 	"size": number, //OPTIONAL
-// 	"user" : {
-// 			"username" : string, //REQUIRED
-// 			"email" : string //REQUIRED
-// 	} REQUIRED
-// } REQUIRED
+// page OPTIONAL default 1
+// limit OPTIONAL default 10
 userFavoriteQuestionsController.get("/", async (req, res) => {
   await handleResponse(res, async () => {
     
-    let from = req.body.from ? req.body.from : 0
-    let size = req.body.size ? req.body.size : 10
-    const user = req.body.user;
+    let { page, limit } = req.query
+    //@ts-ignore
+    const { email, preferred_username } = req.kauth.grant.access_token.content
+    // if limit is undefined set to 10
+    const size = limit ? Number(limit) : 10
+    const pageNumber = !page || Number(page) <= 0 ? 1 : Number(page)
+    const user = {
+        email,
+        username: preferred_username
+    }
 
     // get the favorite document from mongodb
     let userFavorite: Favorite = await checkUserFavorites(res, user)
 
     let searchQuery = {
-        from,
+        from: page ? (pageNumber - 1) * size: 0,
         size,
         query: {
             terms: {
@@ -76,6 +74,42 @@ userFavoriteQuestionsController.get("/", async (req, res) => {
   });
 });
 
+userFavoriteQuestionsController.get("/question-ids", async (req, res) => {
+    await handleResponse(res, async () => {
+      
+      //@ts-ignore
+      const { email, preferred_username } = req.kauth.grant.access_token.content
+
+      const user = {
+          email,
+          username: preferred_username
+      }
+  
+      await checkUserFavorites(res, user)
+  
+      let searchQuery = {
+          query: {
+            bool: {
+                must: [
+                  {
+                    match: {
+                      "user.username": preferred_username
+                    }
+                  },
+                  {
+                    match: {
+                      "user.email": email
+                    }
+                  }
+                ]
+            }
+          },
+      };
+  
+      handleSearch(res, FavoriteModel, searchQuery);
+    });
+});
+
 // POST /favorites question
 // {
 // 	"questionId": string, 
@@ -88,9 +122,7 @@ userFavoriteQuestionsController.post('/', async (req, res) => {
     await handleResponse(res, async () => {
         const questionId = req.body.questionId
         if (!questionId) {
-            return res.status(500).json({
-                error: "the [questionId] is required in the body"
-            })
+            throw new Error("the [questionId] is required in the body")
         }
         //Check question exists in mongodb
         const question: Question | null = await QuestionModel.findById(questionId)
@@ -107,9 +139,7 @@ userFavoriteQuestionsController.post('/', async (req, res) => {
         if(userFavorite) {
             const questionIdExists = userFavorite.favoriteQuestionsIds.find( favQ => favQ.questionId == questionId)
             if(questionIdExists){
-                return res.status(500).json({
-                    error: "Question already in favorites"
-                })
+                throw new Error("Question already in favorites")
             }
 
             userFavorite.favoriteQuestionsIds.push({
@@ -136,9 +166,7 @@ userFavoriteQuestionsController.delete('/', async (req, res) => {
     await handleResponse(res, async () => {
         const questionId = req.body.questionId
         if (!questionId) {
-            return res.status(500).json({
-                error: "the [questionId] is required in the body"
-            })
+            throw new Error("the [questionId] is required in the body")
         }
 
         const user = req.body.user

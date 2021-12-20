@@ -43,8 +43,8 @@ questionsController.get('/', async (req, res) => {
                 }
             } 
         }
-        if(lat && !lon) 
-            return res.status(500).json({ error: "Both lat and lon should be set"})
+        if(lat && !lon)
+            throw new Error("Both lat and lon should be set")
 
         let searchQuery:any = {
             from: page ? (pageNumber - 1) * size: 0,
@@ -58,9 +58,7 @@ questionsController.get('/', async (req, res) => {
         if(search) {
             
             if(!field) {
-                return res.status(500).json({
-                    error: "fields query param is empty"
-                }) 
+                throw new Error("field query params is empty you")
             }
             
             const fields = Array.isArray(field) ? field : [field]
@@ -68,7 +66,7 @@ questionsController.get('/', async (req, res) => {
             
             for (const f of fields) {
                 if(!allowedFields.includes(f as string))
-                    return res.status(500).json({ error: "field must be in ['title', 'content', 'city.name']" })
+                    throw new Error("field must be in ['title', 'content', 'city.name']")
             }
 
             searchQuery.query = {
@@ -152,9 +150,7 @@ questionsController.post('/reply', keycloak.protect(), async (req, res) => {
         let reply: Reply = req.body.reply
 
         if(!questionId || !reply) {
-            return res.status(500).json({
-                error: "the body must contain [questionId] and [reply]"
-            }) 
+            throw new Error("the body must contain [questionId] and [reply]")
         }
 
         let question: Question | null = await QuestionModel.findById(questionId)
