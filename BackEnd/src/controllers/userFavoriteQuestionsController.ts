@@ -11,20 +11,23 @@ const keycloak = getKeycloak()
 userFavoriteQuestionsController.use(keycloak.protect())
 
 // handle getting Favorite document of the user from mongodb
-const checkUserFavorites = async (res:any , user:any): Promise<Favorite> => {
+const checkUserFavorites = async (req:any): Promise<Favorite> => {
 
-    if (!user || !user.username || !user.email) {
-        throw new Error("the [user with username and email] are required in the body")
-    }
+    const { email, preferred_username } = req.kauth.grant.access_token.content
+
+
     let userFavorite: Favorite = await FavoriteModel.findOne({
-        "user.username": user.username,
-        "user.email": user.email,
+        "user.username": preferred_username,
+        "user.email": email,
     })
     if(!userFavorite){
         //create new document for the user if not exists
         userFavorite = {
             id: "",
-            user,
+            user: {
+                username: preferred_username,
+                email
+            },
             favoriteQuestionsIds: [],
         } as Favorite;
         userFavorite = await FavoriteModel.create(userFavorite);
@@ -43,17 +46,13 @@ userFavoriteQuestionsController.get("/", async (req, res) => {
     
     let { page, limit } = req.query
     //@ts-ignore
-    const { email, preferred_username } = req.kauth.grant.access_token.content
+    
     // if limit is undefined set to 10
     const size = limit ? Number(limit) : 10
     const pageNumber = !page || Number(page) <= 0 ? 1 : Number(page)
-    const user = {
-        email,
-        username: preferred_username
-    }
 
     // get the favorite document from mongodb
-    let userFavorite: Favorite = await checkUserFavorites(res, user)
+    let userFavorite: Favorite = await checkUserFavorites(req)
 
     let searchQuery = {
         from: page ? (pageNumber - 1) * size: 0,
@@ -76,53 +75,43 @@ userFavoriteQuestionsController.get("/", async (req, res) => {
 
 userFavoriteQuestionsController.get("/question-ids", async (req, res) => {
     await handleResponse(res, async () => {
-      
-      //@ts-ignore
-      const { email, preferred_username } = req.kauth.grant.access_token.content
-
-      const user = {
-          email,
-          username: preferred_username
-      }
-  
-      await checkUserFavorites(res, user)
-  
-      let searchQuery = {
-          query: {
-            bool: {
-                must: [
-                  {
-                    match: {
-                      "user.username": preferred_username
-                    }
-                  },
-                  {
-                    match: {
-                      "user.email": email
-                    }
-                  }
-                ]
-            }
-          },
-      };
-  
-      handleSearch(res, FavoriteModel, searchQuery);
+             
+        await checkUserFavorites(req)
+        //@ts-ignore
+        const { email, preferred_username } = req.kauth.grant.access_token.content
+    
+        let searchQuery = {
+            query: {
+                bool: {
+                    must: [
+                        {
+                            match: {
+                            "user.username": preferred_username
+                            }
+                        },
+                        {
+                            match: {
+                            "user.email": email
+                            }
+                        }
+                    ]
+                }
+            },
+        };
+    
+        handleSearch(res, FavoriteModel, searchQuery);
     });
 });
 
-// POST /favorites question
+// POST /favorites
 // {
-// 	"questionId": string, 
-// 	"user" : {
-// 			"username" : string, 
-// 			"email" : string 
-// 	}
-// } ALL FIELDS ARE 
+//     questionId: string
+// }
 userFavoriteQuestionsController.post('/', async (req, res) => {
     await handleResponse(res, async () => {
         const questionId = req.body.questionId
         if (!questionId) {
-            throw new Error("the [questionId] is required in the body")
+            throw new Error("the [questionId] is required")
         }
         //Check question exists in mongodb
         const question: Question | null = await QuestionModel.findById(questionId)
@@ -132,9 +121,9 @@ userFavoriteQuestionsController.post('/', async (req, res) => {
             })
         }
 
-        const user = req.body.user
         // get the favorite document from mongodb
-        let userFavorite: Favorite = await checkUserFavorites(res, user)
+        let userFavorite: Favorite = await checkUserFavorites(req)
+
         
         if(userFavorite) {
             const questionIdExists = userFavorite.favoriteQuestionsIds.find( favQ => favQ.questionId == questionId)
@@ -149,29 +138,21 @@ userFavoriteQuestionsController.post('/', async (req, res) => {
             // Sync changes to the index
             saveToIndex(userFavorite)
 
-            res.status(200).json(userFavorite)
+            res.status(200).send("Question added to favorites")
         }
     })
 })
 
-// DELETE /favorites question
-// {
-// 	"questionId": string, 
-// 	"user" : {
-// 			"username" : string, 
-// 			"email" : string 
-// 	}
-// } ALL FIELDS ARE 
-userFavoriteQuestionsController.delete('/', async (req, res) => {
+// DELETE /favorites/:questionId
+userFavoriteQuestionsController.delete('/:questionId', async (req, res) => {
     await handleResponse(res, async () => {
-        const questionId = req.body.questionId
+        const questionId = req.params.questionId
         if (!questionId) {
-            throw new Error("the [questionId] is required in the body")
+            throw new Error("the [questionId] is required")
         }
 
-        const user = req.body.user
         // get the favorite document from mongodb
-        let userFavorite: Favorite = await checkUserFavorites(res, user)
+        let userFavorite: Favorite = await checkUserFavorites(req)
         
         if(userFavorite) {
             // get the other Qs if exists in Array
