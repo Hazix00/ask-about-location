@@ -138,7 +138,7 @@ userFavoriteQuestionsController.post('/', async (req, res) => {
             // Sync changes to the index
             saveToIndex(userFavorite)
 
-            res.status(200).send("Question added to favorites")
+            res.status(200).json({ message: "Question added to favorites" })
         }
     })
 })

@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ApiModelDTO } from 'src/app/dtos/apiModel.dto';
-import { FilteredQuestionDTO } from 'src/app/dtos/questions/filteredQuestion.dto';
 import { UserFavorizedQuestion } from 'src/app/models/userFavorizedQuestion.model';
+import { UserFavoritesService } from 'src/app/services/user-favorites.service';
 
 @Component({
   selector: 'app-question-item',
@@ -11,9 +10,22 @@ import { UserFavorizedQuestion } from 'src/app/models/userFavorizedQuestion.mode
 export class QuestionItemComponent implements OnInit {
 
   @Input() question!: UserFavorizedQuestion
-  constructor() { }
+  constructor(private readonly userFavorites: UserFavoritesService) { }
 
   ngOnInit(): void {
+  }
+
+  toggleFavorite() {
+    if(this.question.isFavorite) {
+      this.userFavorites.removeFavorite(this.question.question.id).subscribe(value => {
+        this.question.isFavorite = false
+      })
+    }
+    else {
+      this.userFavorites.addFavorite({questionId: this.question.question.id}).subscribe(value => {
+        this.question.isFavorite = true
+      })
+    }
   }
 
 }

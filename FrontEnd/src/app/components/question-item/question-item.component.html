@@ -19,7 +19,8 @@
             <button
               mat-icon-button
               color="{{ question.isFavorite ? 'accent' : 'primary' }}"
-              matTooltip="{{ question.isFavorite ? 'Remove from' : 'Add to' }} favorites">
+              matTooltip="{{ question.isFavorite ? 'Remove from' : 'Add to' }} favorites"
+              (click)="toggleFavorite()">
               <mat-icon class="icon">favorite</mat-icon>
             </button>
           </div>
