@@ -1,6 +1,11 @@
 import { Response } from "express";
 import { MongoosasticModel } from "mongoose"
 
+const paginationUrls = [
+    '/api/favorites',
+    '/api/questions'
+]
+
 export const handleResponse = async (res: Response ,callBack: () => Promise<any>) => {
     try {
         await callBack()
@@ -15,8 +20,13 @@ export const handleSearch = (res:Response ,Model: MongoosasticModel<any>, query:
         if(err) {
             return res.status(500).json(err)
         }
-
-        return res.status(200).json(results.hits.hits);
+        console.log(res.req.baseUrl, res.req.url)
+        let returnResults = results.hits
+        if(!paginationUrls.includes(res.req.baseUrl) || res.req.url == '/question-ids') {
+            returnResults = returnResults.hits
+        }
+        
+        return res.status(200).json(returnResults);
     })
 }
 // handle saving document to elasticsearch

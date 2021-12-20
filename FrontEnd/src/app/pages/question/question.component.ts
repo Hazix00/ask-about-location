@@ -11,9 +11,7 @@ export class QuestionPageComponent implements OnInit {
 
   questionId!: string
   question!: UserFavorizedQuestion
-  constructor(
-    private readonly questionsService: QuestionsService
-  ) { }
+  constructor() { }
 
   ngOnInit(): void {
     this.question = history.state

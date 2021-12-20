@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { ApiModelDTO } from '../dtos/apiModel.dto';
 import { FavorizeQuestionDTO } from '../dtos/favorites/favorizeQuestion.dto';
+import { PaginationApiModelDTO } from '../dtos/paginationApiModel.dto';
 import { FilteredQuestionDTO } from '../dtos/questions/filteredQuestion.dto';
 import { Favorite } from '../models/favorite.model';
 
@@ -17,7 +18,7 @@ export class UserFavoritesService {
 
   getQuestions(page: number, limit: number) {
     const qParams = `?page=${page}&limit=${limit}`
-    return this.http.get<ApiModelDTO<FilteredQuestionDTO>[]>(this.endpoint + qParams)
+    return this.http.get<PaginationApiModelDTO<FilteredQuestionDTO>>(this.endpoint + qParams)
   }
 
   getQuestionsIds() {
