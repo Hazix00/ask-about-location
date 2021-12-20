@@ -15,6 +15,7 @@ import { QuestionItemComponent } from './components/question-item/question-item.
 import { SearchComponent } from './components/search/search.component';
 import { QuestionListComponent } from './components/question-list/question-list.component';
 import { QuestionPageComponent } from './pages/question/question.component';
+import { AddQuestionComponent } from './components/add-question/add-question.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { QuestionPageComponent } from './pages/question/question.component';
     SearchComponent,
     QuestionListComponent,
     QuestionPageComponent,
+    AddQuestionComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,7 +1,6 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { ApiModelDTO } from '../dtos/apiModel.dto';
 import { PaginationApiModelDTO } from '../dtos/paginationApiModel.dto';
 import { FilteredQuestionDTO } from '../dtos/questions/filteredQuestion.dto';
 import { PostQuestionDTO } from '../dtos/questions/postQuestion.dto';
@@ -44,9 +43,9 @@ export class QuestionsService {
   }
 
   addQuestion(question: PostQuestionDTO) {
-    this.http.post<Question>(this.endpoint, question)
+    return this.http.post<Question>(this.endpoint, question)
   }
   addQuestionReply(reply: PostQuestionReplyDTO) {
-    this.http.post<Reply>(this.endpoint, reply)
+    return this.http.post<Reply>(this.endpoint, reply)
   }
 }

@@ -24,7 +24,7 @@ questionsController.get('/', async (req, res) => {
         
         // if limit is undefined set to 10
         const size = limit ? Number(limit) : 10
-        const pageNumber = !page || Number(page) <= 0 ? 1 : Number(page)
+        const pageNumber = !page || Number(page) < 0 ? 0 : Number(page)
 
         // By default getting questions ordered by creation date
         let sortCriteria:any = { 
@@ -47,7 +47,7 @@ questionsController.get('/', async (req, res) => {
             throw new Error("Both lat and lon should be set")
 
         let searchQuery:any = {
-            from: page ? (pageNumber - 1) * size: 0,
+            from: page ? pageNumber * size: 0,
             size,
             _source: {
                 exclude:["replies"]
@@ -123,6 +123,12 @@ questionsController.post('/', keycloak.protect(), async (req, res) => {
     await handleResponse(res, async () => {
         let question: Question = req.body
         question.createdAt = new Date()
+        //@ts-ignore
+        const { email, preferred_username } = req.kauth.grant.access_token.content
+        question.user = {
+            username: preferred_username,
+            email
+        }
 
         question = await QuestionModel.create(question)
         

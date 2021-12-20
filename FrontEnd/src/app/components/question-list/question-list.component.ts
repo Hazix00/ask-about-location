@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
@@ -9,6 +10,7 @@ import { UserFavorizedQuestion } from 'src/app/models/userFavorizedQuestion.mode
 import { QuestionsService } from 'src/app/services/questions.service';
 import { SearchDataService } from 'src/app/services/search-data.service';
 import { UserFavoritesService } from 'src/app/services/user-favorites.service';
+import { AddQuestionComponent } from '../add-question/add-question.component';
 
 @Component({
   selector: 'app-question-list',
@@ -20,7 +22,7 @@ export class QuestionListComponent implements OnInit {
   pageUrl!: string
   questions: UserFavorizedQuestion[] = []
   favoriteQuestionIds = new Array<{ questionId: string, createdAt:Date }>()
-  page:number = 1
+  page:number = 0
   limit:number = 10
   totalResults!: number
 
@@ -31,7 +33,8 @@ export class QuestionListComponent implements OnInit {
     private readonly favoritesService: UserFavoritesService,
     private readonly searchDataService: SearchDataService,
     private readonly _snackBar: MatSnackBar,
-    private readonly router: Router
+    private readonly router: Router,
+    public dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -141,5 +144,6 @@ export class QuestionListComponent implements OnInit {
     // Get total results
     this.totalResults = dtoQuestionsResult.total
   }
+
 
 }

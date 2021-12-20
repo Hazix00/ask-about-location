@@ -20,7 +20,7 @@ export const handleSearch = (res:Response ,Model: MongoosasticModel<any>, query:
         if(err) {
             return res.status(500).json(err)
         }
-        
+        console.log(res.req.baseUrl, res.req.url)
         let returnResults = results.hits
         if(!paginationUrls.includes(res.req.baseUrl) || res.req.url == '/question-ids') {
             returnResults = returnResults.hits
