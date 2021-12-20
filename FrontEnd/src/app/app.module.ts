@@ -9,19 +9,21 @@ import { FlexLayoutModule } from '@angular/flex-layout'
 import { ReactiveFormsModule } from '@angular/forms'
 
 import { AppComponent } from './app.component';
-import { HomeComponent } from './pages/home/home.component';
+import { HomePageComponent } from './pages/home/home.component';
 import { initializeKeycloak } from './init/keycloak-init.factory';
 import { QuestionItemComponent } from './components/question-item/question-item.component';
 import { SearchComponent } from './components/search/search.component';
 import { QuestionListComponent } from './components/question-list/question-list.component';
+import { QuestionPageComponent } from './pages/question/question.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent,
+    HomePageComponent,
     QuestionItemComponent,
     SearchComponent,
     QuestionListComponent,
+    QuestionPageComponent,
   ],
   imports: [
     BrowserModule,

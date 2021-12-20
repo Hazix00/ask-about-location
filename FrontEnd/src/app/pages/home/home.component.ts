@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class HomePageComponent implements OnInit {
 
   pageUrl!: string
   searchData!: {search:string, fields:string[]}

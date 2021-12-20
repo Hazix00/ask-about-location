@@ -2,7 +2,7 @@
   <div>
     <mat-card>
       <mat-card-title>
-        <a [routerLink]="['/questions',question.question.id]">{{ question.question.title }}</a>
+        <a [routerLink]="['/question']" [state]="question">{{ question.question.title }}</a>
       </mat-card-title>
       <mat-card-subtitle>{{ question.question.city.name }}</mat-card-subtitle>
       <mat-card-content>

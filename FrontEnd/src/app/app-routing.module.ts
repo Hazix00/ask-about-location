@@ -1,12 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './guards/keykloak-guard';
-import { HomeComponent } from './pages/home/home.component';
+import { HomePageComponent } from './pages/home/home.component';
+import { QuestionPageComponent } from './pages/question/question.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'},
-  {path : 'home', component: HomeComponent, canActivate: [AuthGuard]},
-  {path : 'favorite-questions', component: HomeComponent, canActivate: [AuthGuard]},
+  {path : 'home', component: HomePageComponent, canActivate: [AuthGuard]},
+  {path : 'favorite-questions', component: HomePageComponent, canActivate: [AuthGuard]},
+  {path : 'question', component: QuestionPageComponent, canActivate: [AuthGuard]},
 ];
 
 @NgModule({
