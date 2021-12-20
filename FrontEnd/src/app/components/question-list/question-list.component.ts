@@ -1,7 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { ApiModelDTO } from 'src/app/dtos/apiModel.dto';
+import { PaginationApiModelDTO } from 'src/app/dtos/paginationApiModel.dto';
 import { FilteredQuestionDTO } from 'src/app/dtos/questions/filteredQuestion.dto';
 import { SearchDataDTO } from 'src/app/dtos/searchData.dto';
 import { UserFavorizedQuestion } from 'src/app/models/userFavorizedQuestion.model';
@@ -21,8 +22,9 @@ export class QuestionListComponent implements OnInit {
   favoriteQuestionIds = new Array<{ questionId: string, createdAt:Date }>()
   page:number = 1
   limit:number = 10
+  totalResults!: number
 
-  i = 0
+  searchType: 'byLocation' | 'byLatest' | 'bySearchTerms' | 'byFavorites' = 'byLatest'
 
   constructor(
     private readonly questionsService: QuestionsService,
@@ -33,13 +35,15 @@ export class QuestionListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.refresh()
+  }
 
+  refresh() {
     this.searchDataService.get().subscribe( data => {
       if(data) {
         this.getBySearchFields(data)
       }
     })
-
     this.getFavoriteQuestionIds()
     this.pageUrl = this.router.url
     if(this.pageUrl === '/home') {
@@ -48,6 +52,13 @@ export class QuestionListComponent implements OnInit {
     else if(this.router.url === '/favorite-questions') {
       this.getFavoriteQuestions()
     }
+  }
+
+  onPageChanges(pageEnvent: PageEvent) {
+    this.page = pageEnvent.pageIndex
+    this.limit = pageEnvent.pageSize
+    console.log('onPageChanges executed!')
+    this.refresh()
   }
 
   getBySearchFields(data: SearchDataDTO) {
@@ -114,8 +125,9 @@ export class QuestionListComponent implements OnInit {
     )
   }
 
-  mappingFavorizedQuestion = (dtoQuestions: ApiModelDTO<FilteredQuestionDTO>[]) => {
-    this.questions = dtoQuestions.map( dtoQuestion => {
+  mappingFavorizedQuestion = (dtoQuestionsResult: PaginationApiModelDTO<FilteredQuestionDTO>) => {
+    // The Questions mapping
+    this.questions = dtoQuestionsResult.hits.map( dtoQuestion => {
       let isFavorite = false
       if(this.favoriteQuestionIds.find(favQuestion => favQuestion.questionId === dtoQuestion._id))
         isFavorite = true
@@ -126,7 +138,8 @@ export class QuestionListComponent implements OnInit {
         question
       } as UserFavorizedQuestion
     })
-    console.log(this.questions)
+    // Get total results
+    this.totalResults = dtoQuestionsResult.total
   }
 
 }

@@ -10,6 +10,7 @@ import { MatTooltipModule } from '@angular/material/tooltip'
 import { MatFormFieldModule } from '@angular/material/form-field'
 import { MatInputModule } from '@angular/material/input'
 import { MatSelectModule } from '@angular/material/select'
+import { MatPaginatorModule } from '@angular/material/paginator'
 
 const materialModules: any[] = [
   MatSidenavModule,
@@ -23,6 +24,7 @@ const materialModules: any[] = [
   MatFormFieldModule,
   MatInputModule,
   MatSelectModule,
+  MatPaginatorModule,
 ]
 
 @NgModule({

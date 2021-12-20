@@ -1,3 +1,9 @@
 
 <p *ngIf="!questions.length">No results found</p>
 <app-question-item *ngFor="let item of questions" [question]="item"></app-question-item>
+<mat-paginator [length]="totalResults"
+              [pageSize]="limit"
+              [pageSizeOptions]="[5, 10, 25, 100]"
+              (page)="onPageChanges($event)"
+              aria-label="Select page">
+</mat-paginator>
