@@ -1,8 +1,8 @@
 <div class="container">
-  <div fxLayout="row" fxLayoutAlign="center center">
-    <mat-card fxFlex.gt-sm="60" fxFlex="100">
+  <div>
+    <mat-card>
       <mat-card-title>
-        <a class="card__link" [routerLink]="['/questions',question._id]">{{ question._source.title }}</a>
+        <a [routerLink]="['/questions',question._id]">{{ question._source.title }}</a>
       </mat-card-title>
       <mat-card-subtitle>{{ question._source.city.name }}</mat-card-subtitle>
       <mat-card-content>

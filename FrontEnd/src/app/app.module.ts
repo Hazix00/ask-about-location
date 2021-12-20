@@ -6,17 +6,20 @@ import { MaterialDesignModule } from './material-design.module';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { FlexLayoutModule } from '@angular/flex-layout'
+import { ReactiveFormsModule } from '@angular/forms'
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './pages/home/home.component';
 import { initializeKeycloak } from './init/keycloak-init.factory';
 import { QuestionItemComponent } from './components/question-item/question-item.component';
+import { SearchComponent } from './components/search/search.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     QuestionItemComponent,
+    SearchComponent,
   ],
   imports: [
     BrowserModule,
@@ -25,7 +28,8 @@ import { QuestionItemComponent } from './components/question-item/question-item.
     HttpClientModule,
     BrowserAnimationsModule,
     MaterialDesignModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    ReactiveFormsModule,
   ],
   providers: [{
     provide: APP_INITIALIZER,

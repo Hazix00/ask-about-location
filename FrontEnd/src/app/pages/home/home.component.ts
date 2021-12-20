@@ -20,9 +20,18 @@ export class HomeComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-
     this.getLocation()
+  }
 
+  getBySearchFields(data: {search:string, fields:string[]}) {
+    console.log(data)
+    this.questionsService.getSearchTerms(this.page, this.limit, data.search, data.fields).subscribe(
+      questions => {
+        this.questions = questions
+        console.log(questions)
+      },
+      error => console.log(error)
+    )
   }
 
   private getLocation(): void{
@@ -46,6 +55,7 @@ export class HomeComponent implements OnInit {
        console.log("No support for geolocation")
     }
   }
+
   private locationError = (error: GeolocationPositionError) => {
     if(error.code === GeolocationPositionError.PERMISSION_DENIED) {
       this.openSnackBar()

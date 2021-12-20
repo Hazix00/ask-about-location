@@ -18,32 +18,24 @@ export class QuestionsService {
 
   constructor(private readonly http: HttpClient) { }
 
-  private getQuestions(params: HttpParams) {
-    return this.http.get<ApiModelDTO<FilteredQuestionDTO>[]>(this.endpoint, {params})
+  private getQuestions(qParams: string) {
+    return this.http.get<ApiModelDTO<FilteredQuestionDTO>[]>(this.endpoint + qParams)
   }
   getLatest(page: number, limit: number) {
-    const params = new HttpParams()
-    params.append('page', page)
-    params.append('limit', limit)
+    const qParams = `?page=${page}&limit=${limit}`
 
-    return this.getQuestions(params)
+    return this.getQuestions(qParams)
   }
   getByDistanceCloseToUserLocation(page: number,limit: number, coordinates: Coordinates) {
-    const params = new HttpParams()
-    params.append('page', page)
-    params.append('limit', limit)
-    params.append('lat', coordinates.lat)
-    params.append('lon', coordinates.lon)
+    const qParams = `?page=${page}&limit=${limit}&lat=${coordinates.lat}&lon=${coordinates.lon}`
 
-    return this.getQuestions(params)
+    return this.getQuestions(qParams)
   }
   getSearchTerms(page: number,limit: number, searchValue:string , searchFields: string[]) {
-    const params = new HttpParams()
-    params.append('page', page)
-    params.append('limit', limit)
-    searchFields.forEach( searchField => params.append('field', searchField))
+    let qParams = `?page=${page}&limit=${limit}&search=${searchValue}`
+    searchFields.forEach( searchField => qParams += '&field='+ searchField)
 
-    return this.getQuestions(params)
+    return this.getQuestions(qParams)
   }
   getById(questionId: string) {
     return this.http.get<ApiModelDTO<FilteredQuestionDTO>[]>(this.endpoint + '/' + questionId)

@@ -1,13 +1,14 @@
-<br>
-<div class="container">
-    <div class="container">
-      <div fxLayout="column" fxLayoutGap="20px" fxLayout.gt-md="row"  fxLayoutAlign="space-around center" class="content">
-          <div class="blocks">
-              <button button="submit" mat-raised-button color="primary">
-                  <mat-icon>add</mat-icon> Add Question
-              </button>
-          </div>
+<div class="home" fxLayout="row" fxLayoutAlign="center center">
+    <div fxFlex.gt-sm="60" fxFlex="100">
+      <div fxLayout="column" fxLayout.gt-md="row" fxLayoutAlign="space-around center" class="content">
+        <app-search (searchEvent)="getBySearchFields($event)"></app-search>
+        <br>
+        <div class="blocks">
+          <button button="submit" mat-raised-button color="primary">
+              <mat-icon>add</mat-icon> Add Question
+          </button>
+        </div>
     </div>
+    <br>
+    <app-question-item *ngFor="let item of questions" [question]="item"></app-question-item>
 </div>
-<br>
-<app-question-item *ngFor="let item of questions" [question]="item"></app-question-item>

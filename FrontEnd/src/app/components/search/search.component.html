@@ -1,0 +1,26 @@
+<div class="search-bar" fxLayout="row" fxlayoutGap="5" fxLayoutAlign="start center">
+  <div class="form-control">
+    <mat-form-field appearance="fill">
+      <mat-label>Search</mat-label>
+      <input matInput [formControl]="searchControl" #input placeholder="Search">
+    </mat-form-field>
+  </div>
+
+  <div class="form-control">
+    <mat-form-field appearance="fill">
+      <mat-label>Select search field</mat-label>
+      <mat-select [formControl]="fields" required multiple>
+        <mat-option value="title">Title</mat-option>
+        <mat-option value="content">Content</mat-option>
+        <mat-option value="city.name">Location</mat-option>
+      </mat-select>
+      <mat-error *ngIf="fields.hasError('required')">Please choose at least one field</mat-error>
+    </mat-form-field>
+  </div>
+
+  <div class="search__button">
+    <button mat-icon-button (click)="search()">
+        <mat-icon>search</mat-icon>
+    </button>
+</div>
+</div>
