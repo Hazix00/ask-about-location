@@ -1,4 +1,4 @@
-<div class="search-bar" fxLayout="row" fxlayoutGap="5" fxLayoutAlign="start center">
+<div class="search-bar" fxLayout.gt-sm="row" fxLayout="column" fxLayoutAlign="start center">
   <div class="form-control">
     <mat-form-field appearance="fill">
       <mat-label>Search</mat-label>
@@ -18,7 +18,7 @@
     </mat-form-field>
   </div>
 
-  <div class="search__button">
+  <div class="search__button" fxFlexAlign.gt-sm="none" fxFlexAlign="end">
     <button mat-icon-button (click)="search()">
         <mat-icon>search</mat-icon>
     </button>
