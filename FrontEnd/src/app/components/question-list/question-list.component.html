@@ -1,0 +1,3 @@
+
+<p *ngIf="!questions.length">No results found</p>
+<app-question-item *ngFor="let item of questions" [question]="item"></app-question-item>

@@ -13,6 +13,7 @@ import { HomeComponent } from './pages/home/home.component';
 import { initializeKeycloak } from './init/keycloak-init.factory';
 import { QuestionItemComponent } from './components/question-item/question-item.component';
 import { SearchComponent } from './components/search/search.component';
+import { QuestionListComponent } from './components/question-list/question-list.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { SearchComponent } from './components/search/search.component';
     HomeComponent,
     QuestionItemComponent,
     SearchComponent,
+    QuestionListComponent,
   ],
   imports: [
     BrowserModule,

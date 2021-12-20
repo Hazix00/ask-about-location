@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { ApiModelDTO } from '../dtos/apiModel.dto';
+import { FavorizeQuestionDTO } from '../dtos/favorites/favorizeQuestion.dto';
 import { FilteredQuestionDTO } from '../dtos/questions/filteredQuestion.dto';
 import { Favorite } from '../models/favorite.model';
 
@@ -21,5 +22,12 @@ export class UserFavoritesService {
 
   getQuestionsIds() {
     return this.http.get<ApiModelDTO<Favorite>[]>(this.endpoint + '/question-ids')
+  }
+
+  addFavorite(favorizeQuestion: FavorizeQuestionDTO) {
+    return this.http.post<ApiModelDTO<Favorite>[]>(this.endpoint, favorizeQuestion)
+  }
+  removeFavorite(questionId: string) {
+    return this.http.delete(this.endpoint + '/' + questionId)
   }
 }

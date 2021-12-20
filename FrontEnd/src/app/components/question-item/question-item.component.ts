@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ApiModelDTO } from 'src/app/dtos/apiModel.dto';
 import { FilteredQuestionDTO } from 'src/app/dtos/questions/filteredQuestion.dto';
+import { UserFavorizedQuestion } from 'src/app/models/userFavorizedQuestion.model';
 
 @Component({
   selector: 'app-question-item',
@@ -9,7 +10,7 @@ import { FilteredQuestionDTO } from 'src/app/dtos/questions/filteredQuestion.dto
 })
 export class QuestionItemComponent implements OnInit {
 
-  @Input() question!: ApiModelDTO<FilteredQuestionDTO>
+  @Input() question!: UserFavorizedQuestion
   constructor() { }
 
   ngOnInit(): void {

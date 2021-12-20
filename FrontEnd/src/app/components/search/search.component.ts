@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
+import { SearchDataService } from 'src/app/services/search-data.service';
 
 @Component({
   selector: 'app-search',
@@ -8,11 +9,10 @@ import { FormControl, Validators } from '@angular/forms';
 })
 export class SearchComponent implements OnInit {
 
-  @Output() searchEvent = new EventEmitter<{search:string, fields:string[]}>();
   searchControl = new FormControl('', Validators.required)
   fields = new FormControl('', Validators.required)
 
-  constructor() { }
+  constructor(private readonly searchDataService: SearchDataService) { }
 
   ngOnInit(): void {
   }
@@ -23,7 +23,7 @@ export class SearchComponent implements OnInit {
         search: this.searchControl.value,
         fields: this.fields.value
       }
-      this.searchEvent.emit(searchParams)
+      this.searchDataService.set(searchParams)
     }
   }
 

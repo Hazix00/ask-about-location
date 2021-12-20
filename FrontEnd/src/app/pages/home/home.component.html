@@ -1,7 +1,7 @@
 <div class="home" fxLayout="row" fxLayoutAlign="center center">
-    <div fxFlex.gt-sm="60" fxFlex="100">
-      <div fxLayout="column" fxLayout.gt-md="row" fxLayoutAlign="space-around center" class="content">
-        <app-search (searchEvent)="getBySearchFields($event)"></app-search>
+  <div fxFlex.gt-sm="60" fxFlex="100">
+    <div *ngIf="pageUrl == '/home'" fxLayout="column" fxLayout.gt-md="row" fxLayoutAlign="space-around center" class="content">
+        <app-search></app-search>
         <br>
         <div class="blocks">
           <button button="submit" mat-raised-button color="primary">
@@ -9,6 +9,5 @@
           </button>
         </div>
     </div>
-    <br>
-    <app-question-item *ngFor="let item of questions" [question]="item"></app-question-item>
+    <app-question-list></app-question-list>
 </div>

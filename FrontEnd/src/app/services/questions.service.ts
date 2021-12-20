@@ -5,6 +5,7 @@ import { ApiModelDTO } from '../dtos/apiModel.dto';
 import { FilteredQuestionDTO } from '../dtos/questions/filteredQuestion.dto';
 import { PostQuestionDTO } from '../dtos/questions/postQuestion.dto';
 import { PostQuestionReplyDTO } from '../dtos/questions/postQuestionReply.dto';
+import { SearchDataDTO } from '../dtos/searchData.dto';
 import { Coordinates } from '../models/coordinates.model';
 import { Question } from '../models/question.model';
 import { Reply } from '../models/replie.model';
@@ -31,9 +32,9 @@ export class QuestionsService {
 
     return this.getQuestions(qParams)
   }
-  getSearchTerms(page: number,limit: number, searchValue:string , searchFields: string[]) {
-    let qParams = `?page=${page}&limit=${limit}&search=${searchValue}`
-    searchFields.forEach( searchField => qParams += '&field='+ searchField)
+  getSearchTerms(page: number,limit: number, searchData: SearchDataDTO) {
+    let qParams = `?page=${page}&limit=${limit}&search=${searchData.search}`
+    searchData.fields.forEach( searchField => qParams += '&field='+ searchField)
 
     return this.getQuestions(qParams)
   }

@@ -2,21 +2,24 @@
   <div>
     <mat-card>
       <mat-card-title>
-        <a [routerLink]="['/questions',question._id]">{{ question._source.title }}</a>
+        <a [routerLink]="['/questions',question.question.id]">{{ question.question.title }}</a>
       </mat-card-title>
-      <mat-card-subtitle>{{ question._source.city.name }}</mat-card-subtitle>
+      <mat-card-subtitle>{{ question.question.city.name }}</mat-card-subtitle>
       <mat-card-content>
-        <p>{{ question._source.content }}</p>
+        <p>{{ question.question.content }}</p>
       </mat-card-content>
       <mat-card-actions>
         <div fxLayout="row" fxLayoutAlign="space-between">
           <div class="card__date">
             <mat-card-subtitle>
-              <small>{{ question._source.createdAt | date }}</small>
+              <small>{{ question.question.createdAt | date }}</small>
             </mat-card-subtitle>
           </div>
           <div>
-            <button mat-icon-button color="primary" matTooltip="Add to favorites">
+            <button
+              mat-icon-button
+              color="{{ question.isFavorite ? 'accent' : 'primary' }}"
+              matTooltip="{{ question.isFavorite ? 'Remove from' : 'Add to' }} favorites">
               <mat-icon class="icon">favorite</mat-icon>
             </button>
           </div>
