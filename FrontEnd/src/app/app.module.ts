@@ -16,6 +16,8 @@ import { SearchComponent } from './components/search/search.component';
 import { QuestionListComponent } from './components/questions/question-list/question-list.component';
 import { QuestionPageComponent } from './pages/question/question.component';
 import { AddQuestionComponent } from './components/questions/add-question/add-question.component';
+import { ReplyListComponent } from './components/replies/reply-list/reply-list.component';
+import { ReplyItemComponent } from './components/replies/reply-item/reply-item.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +28,8 @@ import { AddQuestionComponent } from './components/questions/add-question/add-qu
     QuestionListComponent,
     QuestionPageComponent,
     AddQuestionComponent,
+    ReplyListComponent,
+    ReplyItemComponent,
   ],
   imports: [
     BrowserModule,

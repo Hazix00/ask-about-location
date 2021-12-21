@@ -27,4 +27,10 @@ export class SearchComponent implements OnInit {
     }
   }
 
+  cancel() {
+    this.searchControl.reset(),
+    this.fields.reset()
+    this.searchDataService.clear()
+  }
+
 }

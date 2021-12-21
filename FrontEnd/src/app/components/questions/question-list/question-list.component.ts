@@ -25,8 +25,8 @@ export class QuestionListComponent implements OnInit {
   page:number = 0
   limit:number = 10
   totalResults!: number
-
-  searchType: 'byLocation' | 'byLatest' | 'bySearchTerms' | 'byFavorites' = 'byLatest'
+  loading = true
+  searchData: SearchDataDTO | null = null
 
   constructor(
     private readonly questionsService: QuestionsService,
@@ -39,22 +39,34 @@ export class QuestionListComponent implements OnInit {
 
   ngOnInit(): void {
     this.refresh()
+    this.searchDataService.get().subscribe( data => {
+      if(!data) {
+        this.page = 0
+      }
+      this.searchData = data
+      this.refresh()
+    })
   }
 
   refresh() {
-    this.searchDataService.get().subscribe( data => {
-      if(data) {
-        this.getBySearchFields(data)
-      }
-    })
+    this.loading = true
+
     this.getFavoriteQuestionIds()
-    this.pageUrl = this.router.url
-    if(this.pageUrl === '/home') {
-      this.getLocation()
+
+    if(this.searchData){
+      this.getBySearchFields(this.searchData)
     }
-    else if(this.router.url === '/favorite-questions') {
-      this.getFavoriteQuestions()
+    else {
+      this.pageUrl = this.router.url
+      if(this.pageUrl === '/home') {
+        this.getLocation()
+      }
+      else if(this.router.url === '/favorite-questions') {
+        this.getFavoriteQuestions()
+      }
     }
+
+    this.loading = false
   }
 
   onPageChanges(pageEnvent: PageEvent) {

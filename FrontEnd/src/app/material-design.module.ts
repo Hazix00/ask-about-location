@@ -13,6 +13,7 @@ import { MatSelectModule } from '@angular/material/select'
 import { MatPaginatorModule } from '@angular/material/paginator'
 import { MatDialogModule } from '@angular/material/dialog'
 import { MatAutocompleteModule } from '@angular/material/autocomplete'
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
 
 const materialModules: any[] = [
   MatSidenavModule,
@@ -29,6 +30,7 @@ const materialModules: any[] = [
   MatPaginatorModule,
   MatDialogModule,
   MatAutocompleteModule,
+  MatProgressSpinnerModule,
 ]
 
 @NgModule({

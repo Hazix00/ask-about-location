@@ -49,13 +49,13 @@ userFavoriteQuestionsController.get("/", async (req, res) => {
     
     // if limit is undefined set to 10
     const size = limit ? Number(limit) : 10
-    const pageNumber = !page || Number(page) <= 0 ? 1 : Number(page)
+    const pageNumber = !page || Number(page) < 0 ? 0 : Number(page)
 
     // get the favorite document from mongodb
     let userFavorite: Favorite = await checkUserFavorites(req)
 
     let searchQuery = {
-        from: page ? (pageNumber - 1) * size: 0,
+        from: page ? pageNumber * size: 0,
         size,
         query: {
             terms: {
