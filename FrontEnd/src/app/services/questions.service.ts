@@ -8,7 +8,7 @@ import { PostQuestionReplyDTO } from '../dtos/questions/postQuestionReply.dto';
 import { SearchDataDTO } from '../dtos/searchData.dto';
 import { Coordinates } from '../models/coordinates.model';
 import { Question } from '../models/question.model';
-import { Reply } from '../models/replie.model';
+import { Reply } from '../models/reply.model';
 
 @Injectable({
   providedIn: 'root'

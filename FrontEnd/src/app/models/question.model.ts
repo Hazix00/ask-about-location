@@ -1,5 +1,5 @@
 import { City } from "./city.model";
-import { Reply } from "./replie.model";
+import { Reply } from "./reply.model";
 import { User } from "./user.model";
 
 export interface Question {

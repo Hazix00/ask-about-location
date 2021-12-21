@@ -1,4 +1,4 @@
-import { Reply } from "src/app/models/replie.model";
+import { Reply } from "src/app/models/reply.model";
 
 export interface PostQuestionReplyDTO {
   questionId: string,
