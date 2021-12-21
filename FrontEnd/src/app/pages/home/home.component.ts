@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { AddQuestionComponent } from 'src/app/components/add-question/add-question.component';
+import { AddQuestionComponent } from 'src/app/components/questions/add-question/add-question.component';
 import { QuestionsService } from 'src/app/services/questions.service';
 
 @Component({

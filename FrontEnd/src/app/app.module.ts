@@ -11,11 +11,11 @@ import { ReactiveFormsModule } from '@angular/forms'
 import { AppComponent } from './app.component';
 import { HomePageComponent } from './pages/home/home.component';
 import { initializeKeycloak } from './init/keycloak-init.factory';
-import { QuestionItemComponent } from './components/question-item/question-item.component';
+import { QuestionItemComponent } from './components/questions/question-item/question-item.component';
 import { SearchComponent } from './components/search/search.component';
-import { QuestionListComponent } from './components/question-list/question-list.component';
+import { QuestionListComponent } from './components/questions/question-list/question-list.component';
 import { QuestionPageComponent } from './pages/question/question.component';
-import { AddQuestionComponent } from './components/add-question/add-question.component';
+import { AddQuestionComponent } from './components/questions/add-question/add-question.component';
 
 @NgModule({
   declarations: [
