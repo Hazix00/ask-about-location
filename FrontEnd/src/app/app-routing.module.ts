@@ -8,7 +8,7 @@ const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'},
   {path : 'home', component: HomePageComponent, canActivate: [AuthGuard]},
   {path : 'favorite-questions', component: HomePageComponent, canActivate: [AuthGuard]},
-  {path : 'question', component: QuestionPageComponent, canActivate: [AuthGuard]},
+  {path : 'questions/:questionId', component: QuestionPageComponent, canActivate: [AuthGuard]},
 ];
 
 @NgModule({

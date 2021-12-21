@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -10,7 +10,6 @@ import { UserFavorizedQuestion } from 'src/app/models/userFavorizedQuestion.mode
 import { QuestionsService } from 'src/app/services/questions.service';
 import { SearchDataService } from 'src/app/services/search-data.service';
 import { UserFavoritesService } from 'src/app/services/user-favorites.service';
-import { AddQuestionComponent } from '../add-question/add-question.component';
 
 @Component({
   selector: 'app-question-list',
@@ -21,7 +20,6 @@ export class QuestionListComponent implements OnInit {
 
   pageUrl!: string
   questions: UserFavorizedQuestion[] = []
-  favoriteQuestionIds = new Array<{ questionId: string, createdAt:Date }>()
   page:number = 0
   limit:number = 10
   totalResults!: number
@@ -50,8 +48,6 @@ export class QuestionListComponent implements OnInit {
 
   refresh() {
     this.loading = true
-
-    this.getFavoriteQuestionIds()
 
     if(this.searchData){
       this.getBySearchFields(this.searchData)
@@ -130,21 +126,11 @@ export class QuestionListComponent implements OnInit {
     )
   }
 
-  private getFavoriteQuestionIds() {
-    this.favoritesService.getQuestionsIds().subscribe(
-      userFavorites => {
-        this.favoriteQuestionIds = userFavorites[0]._source.favoriteQuestionsIds
-        console.log('/favorites/question-ids', userFavorites)
-      },
-      error => console.log(error)
-    )
-  }
-
   mappingFavorizedQuestion = (dtoQuestionsResult: PaginationApiModelDTO<FilteredQuestionDTO>) => {
     // The Questions mapping
     this.questions = dtoQuestionsResult.hits.map( dtoQuestion => {
       let isFavorite = false
-      if(this.favoriteQuestionIds.find(favQuestion => favQuestion.questionId === dtoQuestion._id))
+      if(this.favoritesService.favoriteQuestionsIds?.find(qId => qId === dtoQuestion._id))
         isFavorite = true
       const question = dtoQuestion._source
       question.id = dtoQuestion._id

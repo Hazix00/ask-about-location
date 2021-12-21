@@ -79,7 +79,7 @@ questionsController.get('/', async (req, res) => {
             }
         }
 
-        handleSearch(res, QuestionModel,searchQuery)
+        handleSearch(res, QuestionModel,searchQuery, true)
         
     })
     
@@ -97,7 +97,7 @@ questionsController.get('/:questionId', async (req, res) => {
                 }
             }
         }
-        handleSearch(res, QuestionModel, searchQuery)
+        handleSearch(res, QuestionModel, searchQuery, false)
 
     })
 })

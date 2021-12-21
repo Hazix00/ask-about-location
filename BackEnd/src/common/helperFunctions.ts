@@ -15,14 +15,14 @@ export const handleResponse = async (res: Response ,callBack: () => Promise<any>
     }
 }
 // Handle elasticsearch searching
-export const handleSearch = (res:Response ,Model: MongoosasticModel<any>, query:any) => {
+export const handleSearch = (res:Response ,Model: MongoosasticModel<any>, query:any, includePaginatiom: boolean) => {
     Model.esSearch( query, {}, (err: any, results: any ) => {
         if(err) {
-            return res.status(500).json(err)
+            throw err
         }
         console.log(res.req.baseUrl, res.req.url)
         let returnResults = results.hits
-        if(!paginationUrls.includes(res.req.baseUrl) || res.req.url == '/question-ids') {
+        if(!includePaginatiom) {
             returnResults = returnResults.hits
         }
         

@@ -69,7 +69,7 @@ userFavoriteQuestionsController.get("/", async (req, res) => {
         },
     };
 
-    handleSearch(res, QuestionModel, searchQuery);
+    handleSearch(res, QuestionModel, searchQuery, true);
   });
 });
 
@@ -99,7 +99,7 @@ userFavoriteQuestionsController.get("/question-ids", async (req, res) => {
             },
         };
     
-        handleSearch(res, FavoriteModel, searchQuery);
+        handleSearch(res, FavoriteModel, searchQuery, false);
     });
 });
 

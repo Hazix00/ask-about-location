@@ -48,6 +48,6 @@ citiesController.get('/', async (req, res) => {
         size,
         query: searchCriteria
       }
-      handleSearch(res, CityModel, searchQuery)
+      handleSearch(res, CityModel, searchQuery, false)
   }) 
 });

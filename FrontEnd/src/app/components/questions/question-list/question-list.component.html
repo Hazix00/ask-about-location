@@ -1,11 +1,14 @@
 
-<mat-spinner  *ngIf="loading" fxFlexAlign="center"></mat-spinner>
+<div *ngIf="loading" fxLaout="row" fxLayoutAlign="center">
+  <mat-spinner></mat-spinner>
+</div>
 <p *ngIf="!questions.length">No results found</p>
-<app-question-item *ngFor="let item of questions" [question]="item"></app-question-item>
-<mat-paginator [length]="totalResults"
-              [pageSize]="limit"
-              [pageSizeOptions]="[5, 10, 25, 100]"
-              [pageIndex]="page"
-              (page)="onPageChanges($event)"
-              aria-label="Select page">
+<app-question-item *ngFor="let item of questions" [question]="item" [titleIsLink]="true"></app-question-item>
+<mat-paginator
+    [length]="totalResults"
+    [pageSize]="limit"
+    [pageSizeOptions]="[5, 10, 25, 100]"
+    [pageIndex]="page"
+    (page)="onPageChanges($event)"
+    aria-label="Select page">
 </mat-paginator>

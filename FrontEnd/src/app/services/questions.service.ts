@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
+import { ApiModelDTO } from '../dtos/apiModel.dto';
 import { PaginationApiModelDTO } from '../dtos/paginationApiModel.dto';
 import { FilteredQuestionDTO } from '../dtos/questions/filteredQuestion.dto';
 import { PostQuestionDTO } from '../dtos/questions/postQuestion.dto';
@@ -39,7 +40,7 @@ export class QuestionsService {
     return this.getQuestions(qParams)
   }
   getById(questionId: string) {
-    return this.http.get<PaginationApiModelDTO<FilteredQuestionDTO>>(this.endpoint + '/' + questionId)
+    return this.http.get<ApiModelDTO<Question>[]>(this.endpoint + '/' + questionId)
   }
 
   addQuestion(question: PostQuestionDTO) {

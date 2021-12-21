@@ -10,6 +10,7 @@ import { UserFavoritesService } from 'src/app/services/user-favorites.service';
 export class QuestionItemComponent implements OnInit {
 
   @Input() question!: UserFavorizedQuestion
+  @Input() titleIsLink!:boolean
   constructor(private readonly userFavorites: UserFavoritesService) { }
 
   ngOnInit(): void {
@@ -17,12 +18,12 @@ export class QuestionItemComponent implements OnInit {
 
   toggleFavorite() {
     if(this.question.isFavorite) {
-      this.userFavorites.removeFavorite(this.question.question.id).subscribe(value => {
+      this.userFavorites.removeFavorite(this.question.question.id).subscribe(() => {
         this.question.isFavorite = false
       })
     }
     else {
-      this.userFavorites.addFavorite({questionId: this.question.question.id}).subscribe(value => {
+      this.userFavorites.addFavorite({questionId: this.question.question.id}).subscribe(() => {
         this.question.isFavorite = true
       })
     }

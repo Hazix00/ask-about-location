@@ -1,4 +1,5 @@
 <div class="search-bar" fxLayout.gt-sm="row" fxLayout="column" fxLayoutAlign="start center">
+
   <div class="form-control">
     <mat-form-field appearance="fill">
       <mat-label>Search</mat-label>
@@ -18,9 +19,16 @@
     </mat-form-field>
   </div>
 
-  <div class="search__button" fxFlexAlign.gt-sm="none" fxFlexAlign="end">
-    <button mat-icon-button (click)="search()">
-        <mat-icon>search</mat-icon>
-    </button>
-</div>
+  <div fxLayout="row" *ngIf="this.searchControl.value || this.fields.value">
+    <div fxFlexAlign.gt-sm="none" fxFlexAlign="start">
+      <button mat-icon-button (click)="cancel()">
+          <mat-icon>keyboard_backspace</mat-icon>
+      </button>
+    </div>
+    <div class="search__button" fxFlexAlign.gt-sm="none" fxFlexAlign="end">
+      <button mat-icon-button (click)="search()">
+          <mat-icon>search</mat-icon>
+      </button>
+    </div>
+  </div>
 </div>

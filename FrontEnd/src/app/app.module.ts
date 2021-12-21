@@ -18,6 +18,7 @@ import { QuestionPageComponent } from './pages/question/question.component';
 import { AddQuestionComponent } from './components/questions/add-question/add-question.component';
 import { ReplyListComponent } from './components/replies/reply-list/reply-list.component';
 import { ReplyItemComponent } from './components/replies/reply-item/reply-item.component';
+import { AddReplyComponent } from './components/replies/add-reply/add-reply.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { ReplyItemComponent } from './components/replies/reply-item/reply-item.c
     AddQuestionComponent,
     ReplyListComponent,
     ReplyItemComponent,
+    AddReplyComponent,
   ],
   imports: [
     BrowserModule,
