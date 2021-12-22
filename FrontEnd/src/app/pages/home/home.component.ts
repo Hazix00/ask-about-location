@@ -22,12 +22,13 @@ export class HomePageComponent implements OnInit {
   ngOnInit(): void {
     this.pageUrl = this.router.url
   }
-
+  // Add question dialog
   openDialog(): void {
     let dialogRef = this.dialog.open(AddQuestionComponent, {
       width: '600px',
       data: 'Add Post'
     });
+    // handle adding question
     dialogRef.componentInstance.event.subscribe((result) => {
       // console.log(result)
       this.questionsService.addQuestion(result).subscribe( data => {
@@ -37,6 +38,7 @@ export class HomePageComponent implements OnInit {
     });
   }
 
+  // refrech page without browser refresh
   reloadCurrentRoute() {
     let currentUrl = this.router.url;
     this.router.navigateByUrl('/question', {skipLocationChange: true}).then(() => {

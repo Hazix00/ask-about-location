@@ -36,10 +36,12 @@ export class QuestionListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    // loading questions
     this.refresh()
+    // get the search submitted data
     this.searchDataService.get().subscribe( data => {
       if(!data) {
-        this.page = 0
+        this.page = 0 // get to the first page when search is cancelled
       }
       this.searchData = data
       this.refresh()
@@ -48,11 +50,11 @@ export class QuestionListComponent implements OnInit {
 
   refresh() {
     this.loading = true
-
+    // search if searchData is set
     if(this.searchData){
       this.getBySearchFields(this.searchData)
     }
-    else {
+    else { //else load questions of the current page
       this.pageUrl = this.router.url
       if(this.pageUrl === '/home') {
         this.getLocation()
@@ -64,14 +66,14 @@ export class QuestionListComponent implements OnInit {
 
     this.loading = false
   }
-
+  // pagination
   onPageChanges(pageEnvent: PageEvent) {
     this.page = pageEnvent.pageIndex
     this.limit = pageEnvent.pageSize
     console.log('onPageChanges executed!')
     this.refresh()
   }
-
+  // handle search
   getBySearchFields(data: SearchDataDTO) {
     console.log(data)
     this.questionsService.getSearchTerms(this.page, this.limit, data).subscribe(
@@ -79,12 +81,13 @@ export class QuestionListComponent implements OnInit {
       error => console.log(error)
     )
   }
-
+  //try to sort questions by location distance
   private getLocation(): void{
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position)=>{
           const {longitude, latitude} = position.coords;
+          //getting sorted questions
           this.questionsService.getByDistanceCloseToUserLocation(
             this.page,
             this.limit,
@@ -95,13 +98,13 @@ export class QuestionListComponent implements OnInit {
             error => console.log(error)
           )
         },
-        this.locationError
+        this.locationError // error handler
       );
     } else {
       console.log("No support for geolocation")
     }
   }
-
+  // handle position errors
   private locationError = (error: GeolocationPositionError) => {
     if(error.code === GeolocationPositionError.PERMISSION_DENIED) {
       this.openSnackBar()
@@ -111,7 +114,7 @@ export class QuestionListComponent implements OnInit {
       error => console.log(error)
     )
   }
-
+  // Warning message about browser location service
   openSnackBar() {
     this._snackBar.open("Allow your browser location to get the closest question locations!", "Ok", {
       horizontalPosition: 'center',
@@ -125,7 +128,7 @@ export class QuestionListComponent implements OnInit {
       error => console.log(error)
     )
   }
-
+  // mapping to UserFavorizedQuestion objects
   mappingFavorizedQuestion = (dtoQuestionsResult: PaginationApiModelDTO<FilteredQuestionDTO>) => {
     // The Questions mapping
     this.questions = dtoQuestionsResult.hits.map( dtoQuestion => {

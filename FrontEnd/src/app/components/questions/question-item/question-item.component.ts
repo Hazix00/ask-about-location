@@ -15,7 +15,7 @@ export class QuestionItemComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
+  // toggle is favorite
   toggleFavorite() {
     if(this.question.isFavorite) {
       this.userFavorites.removeFavorite(this.question.question.id).subscribe(() => {

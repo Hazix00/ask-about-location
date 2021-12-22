@@ -31,20 +31,16 @@ export class AddQuestionComponent implements OnInit {
   ) { }
 
   ngOnInit = () => {
-    this.questionForm.get('city')?.valueChanges.subscribe( value => {
-      console.log(value)
-      this.setCities(value)
-    })
   }
-
+  // display the name
   displayFn(apiCity: ApiModelDTO<City>): string {
     return apiCity && apiCity._source.name ? apiCity._source.name : '';
   }
-
+  // make sure city ids are unique
   trackByMethod(index:number, el:ApiModelDTO<City>): string {
     return el._id;
   }
-
+  // get city name start with or equal value of input while typing
   onInput(event: any) {
     this.setCities(event.target.value)
   }
@@ -54,7 +50,7 @@ export class AddQuestionComponent implements OnInit {
       this.cities = cities
     })
   }
-
+  // emit data to the Home page component
   onSubmit() {
     if(this.questionForm.valid){
       const value = this.questionForm.getRawValue()

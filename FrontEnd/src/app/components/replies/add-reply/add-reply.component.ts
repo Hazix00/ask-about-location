@@ -30,6 +30,7 @@ export class AddReplyComponent implements OnInit {
           content: this.replyContent.value
         }
       }
+
       this.questionsService.addQuestionReply(postReplyDTO)
       .subscribe((reply) => {
         this.replyDataService.set(reply)

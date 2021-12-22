@@ -23,6 +23,7 @@ export class SearchComponent implements OnInit {
         search: this.searchControl.value,
         fields: this.fields.value
       }
+      // submit search data to the question-list component
       this.searchDataService.set(searchParams)
     }
   }

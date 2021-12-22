@@ -23,16 +23,19 @@ export class QuestionsService {
   private getQuestions(qParams: string) {
     return this.http.get<PaginationApiModelDTO<FilteredQuestionDTO>>(this.endpoint + qParams)
   }
+  // get by date of creation
   getLatest(page: number, limit: number) {
     const qParams = `?page=${page}&limit=${limit}`
 
     return this.getQuestions(qParams)
   }
+  // get sorted by question location distance
   getByDistanceCloseToUserLocation(page: number,limit: number, coordinates: Coordinates) {
     const qParams = `?page=${page}&limit=${limit}&lat=${coordinates.lat}&lon=${coordinates.lon}`
 
     return this.getQuestions(qParams)
   }
+  // search by value in 1 to 3 fields
   getSearchTerms(page: number,limit: number, searchData: SearchDataDTO) {
     let qParams = `?page=${page}&limit=${limit}&search=${searchData.search}`
     searchData.fields.forEach( searchField => qParams += '&field='+ searchField)

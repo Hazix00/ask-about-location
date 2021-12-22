@@ -13,6 +13,7 @@ export class QuestionPageComponent implements OnInit {
 
   questionId!: string
   question = new UserFavorizedQuestion()
+  //making sure that question is not undefined
   questionIsSet = false
 
   constructor(
@@ -29,8 +30,10 @@ export class QuestionPageComponent implements OnInit {
   }
 
   refreshQuesionReplies() {
+    // get the question
     this.questionsService.getById(this.questionId)
       .subscribe( questionDTO => {
+        //check question is favorite
         let isFavorite = false
         if(this.userFavoritesService.favoriteQuestionsIds?.includes(this.questionId)) {
           isFavorite = true
@@ -40,9 +43,10 @@ export class QuestionPageComponent implements OnInit {
           question: questionDTO[0]._source
         }
         this.question.question.id = this.questionId
+        //sort replies by creatiton date
         this.question.question.replies.sort((a, b) => {
-          if(a.createdAt > b.createdAt) return 1
-          if(a.createdAt < b.createdAt) return -1
+          if(a.createdAt < b.createdAt) return 1
+          if(a.createdAt > b.createdAt) return -1
           return 0
         })
         this.questionIsSet = true

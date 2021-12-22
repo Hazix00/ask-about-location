@@ -16,6 +16,7 @@ export class ReplyListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    // get the submitted reply and add it to the list
     this.replyDataService.get()
     .subscribe( replyData => {
       this.replies = [replyData, ...this.replies]
