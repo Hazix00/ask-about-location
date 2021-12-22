@@ -3,11 +3,21 @@ import { handleResponse, handleSearch, saveToIndex } from "../common/helperFunct
 import { getKeycloak } from '../config/keycloak-config';
 import { Question, QuestionModel } from "../models/question.model";
 import { Reply } from "../models/replies.schema";
+import { User } from "../models/user.schema";
 
 export const questionsController = express.Router();
 
 // Use Authentication
 const keycloak = getKeycloak()
+
+
+const getUser = (req:any): User => {
+    const { email, preferred_username } = req.kauth.grant.access_token.content
+    return {
+        email: email,
+        username: preferred_username
+    }
+}
 
 // GET /questions?page=0&limit=10&lat=value&lon=value&search=value&field=title&filed=content&field=city.name
 // page OPTIONAL default 1
@@ -112,10 +122,6 @@ questionsController.get('/:questionId', async (req, res) => {
 // 			"lat": number,
 // 			"lon": number
 // 		}
-// 	},
-// 	"user": {
-// 		"username": string,
-// 		"email": string
 // 	}
 // } ALL FIELDS ARE REQUIRED
 questionsController.post('/', keycloak.protect(), async (req, res) => {
@@ -123,12 +129,7 @@ questionsController.post('/', keycloak.protect(), async (req, res) => {
     await handleResponse(res, async () => {
         let question: Question = req.body
         question.createdAt = new Date()
-        //@ts-ignore
-        const { email, preferred_username } = req.kauth.grant.access_token.content
-        question.user = {
-            username: preferred_username,
-            email
-        }
+        question.user = getUser(req)
 
         question = await QuestionModel.create(question)
         
@@ -141,11 +142,7 @@ questionsController.post('/', keycloak.protect(), async (req, res) => {
 // {
 // 	"questionId": string,
 // 	"reply": {
-// 		"content": string,
-// 		"user": {
-// 			"username": string,
-// 			"email": string
-// 		}
+// 		"content": string
 // 	}
 // } ALL FIELDS ARE REQUIRED
 questionsController.post('/reply', keycloak.protect(), async (req, res) => {
@@ -166,6 +163,7 @@ questionsController.post('/reply', keycloak.protect(), async (req, res) => {
             })
         }
 
+        reply.user = getUser(req)
         reply.createdAt = new Date()
         question.replies.push(reply)
         await QuestionModel.validate(question)
