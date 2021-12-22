@@ -1,18 +1,16 @@
-<div class="search-bar" fxLayout.gt-sm="row" fxLayout="column" fxLayoutAlign="space-around center">
-
-  <div class="form-control">
-    <mat-form-field>
-      <mat-label>Search</mat-label>
-      <input matInput #input placeholder="Search">
-    </mat-form-field>
-  </div>
-
-  <div class="form-control">
-    <div class="blocks">
-      <button button="submit" mat-raised-button color="primary">
-        <mat-icon>add</mat-icon> Add Question
-      </button>
+<div fxLayout="row">
+  <div fxFlexOffset="15" fxFlex="70">
+    <div fxLayout="column">
+      <div fxFill>
+        <mat-form-field appearance="fill">
+          <textarea matInput [formControl]="replyContent" placeholder="Write a comment..."></textarea>
+        </mat-form-field>
+      </div>
+      <div fxFlexAlign="end">
+        <button button="submit" mat-raised-button color="primary" (click)="submitReply()">
+          Comment
+        </button>
+      </div>
     </div>
   </div>
-
 </div>

@@ -47,6 +47,6 @@ export class QuestionsService {
     return this.http.post<Question>(this.endpoint, question)
   }
   addQuestionReply(reply: PostQuestionReplyDTO) {
-    return this.http.post<Reply>(this.endpoint, reply)
+    return this.http.post<Reply>(this.endpoint + '/reply', reply)
   }
 }

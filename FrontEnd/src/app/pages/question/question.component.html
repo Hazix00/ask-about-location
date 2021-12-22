@@ -1,7 +1,7 @@
 <div class="home" fxLayout="row" fxLayoutAlign="center center">
   <div fxFlex.gt-sm="60" fxFlex="100">
     <app-question-item *ngIf="questionIsSet" [question]="question" [titleIsLink]="false"></app-question-item>
-    <app-add-reply></app-add-reply>
-    <app-reply-list></app-reply-list>
+    <app-add-reply *ngIf="questionIsSet" [questionId]="question.question.id"></app-add-reply>
+    <app-reply-list *ngIf="questionIsSet" [replies]="question.question.replies"></app-reply-list>
   </div>
 </div>

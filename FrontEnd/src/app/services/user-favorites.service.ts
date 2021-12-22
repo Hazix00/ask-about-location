@@ -50,7 +50,4 @@ export class UserFavoritesService {
     return removeFavoriteObservable
   }
 }
-function tap(arg0: (data: any) => void): import("rxjs").OperatorFunction<ApiModelDTO<Favorite>[], unknown> {
-  throw new Error('Function not implemented.');
-}
 

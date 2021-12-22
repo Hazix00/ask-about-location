@@ -25,7 +25,10 @@ export class QuestionPageComponent implements OnInit {
     this.route.params.subscribe( (param) => {
       this.questionId= param.questionId
     })
+    this.refreshQuesionReplies()
+  }
 
+  refreshQuesionReplies() {
     this.questionsService.getById(this.questionId)
       .subscribe( questionDTO => {
         let isFavorite = false
@@ -36,10 +39,15 @@ export class QuestionPageComponent implements OnInit {
           isFavorite,
           question: questionDTO[0]._source
         }
+        this.question.question.id = this.questionId
+        this.question.question.replies.sort((a, b) => {
+          if(a.createdAt > b.createdAt) return 1
+          if(a.createdAt < b.createdAt) return -1
+          return 0
+        })
         this.questionIsSet = true
         console.log(this.question)
       })
-
   }
 
 }
